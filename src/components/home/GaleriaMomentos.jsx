@@ -40,68 +40,50 @@ const GaleriaMomentos = ({ fotos, loading }) => {
     return null
   }
 
-  // Create masonry-like layout
-  const getGridClass = (index) => {
-    const pattern = index % 6
-    switch (pattern) {
-      case 0:
-        return 'col-span-2 row-span-2'
-      case 1:
-      case 2:
-        return 'col-span-1 row-span-1'
-      case 3:
-        return 'col-span-1 row-span-2'
-      case 4:
-      case 5:
-        return 'col-span-1 row-span-1'
-      default:
-        return 'col-span-1 row-span-1'
-    }
-  }
-
   return (
     <section id="galeria" className="py-16 md:py-24 bg-gradient-to-b from-blue-900 to-blue-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <p className="text-cyan-400 font-semibold mb-2">Galeria</p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-            Momentos <span className="gradient-text">Inesquecíveis</span>
-          </h2>
-          <p className="mt-4 text-white/60 max-w-2xl mx-auto">
-            Confira algumas fotos das nossas aventuras e dos nossos aventureiros
-          </p>
-        </div>
+      {/* Header centralizado */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 text-center mb-12">
+        <p className="text-cyan-400 font-semibold mb-2">Galeria</p>
+        <h2 className="text-4xl md:text-5xl font-bold text-white">
+          Momentos <span className="gradient-text">Inesquecíveis</span>
+        </h2>
+        <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+          Confira algumas fotos das nossas aventuras e dos nossos aventureiros
+        </p>
+      </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
-          {fotos.map((foto, index) => (
-            <div
-              key={foto.id}
-              className={`${getGridClass(index)} relative group overflow-hidden rounded-xl cursor-pointer`}
-              onClick={() => openLightbox(index)}
-            >
-              <img
-                src={foto.imagem_url}
-                alt={foto.legenda || `Momento ${index + 1}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <Expand size={24} className="text-white" />
-                  </div>
+      {/* Grid de fotos - mais largo */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {fotos.map((foto, index) => {
+            const isLarge = index === 0 || index === 3
+            return (
+              <div
+                key={foto.id}
+                onClick={() => openLightbox(index)}
+                className={`relative rounded-xl overflow-hidden cursor-pointer group ${
+                  isLarge ? 'col-span-2 row-span-2' : ''
+                }`}
+                style={{ aspectRatio: '1' }}
+              >
+                <img
+                  src={foto.imagem_url}
+                  alt={foto.legenda || 'Momento Trilhos e Trilhas'}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                  <Expand size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
                 {foto.legenda && (
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                     <p className="text-white text-sm">{foto.legenda}</p>
                   </div>
                 )}
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 

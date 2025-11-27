@@ -17,20 +17,18 @@ const SobreSection = ({ config }) => {
   ]
 
   return (
-    <section id="sobre" className="py-16 md:py-24 bg-blue-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-center">
-          {/* Left Column - Text Content */}
-          <div className="lg:col-span-2 space-y-6">
-            <div>
-              <p className="text-cyan-400 font-semibold mb-2">Sobre Nós</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-                Sua próxima aventura{' '}
-                <span className="gradient-text">começa aqui</span>
-              </h2>
-            </div>
+    <section id="sobre" className="py-16 md:py-24 bg-blue-950">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column - Text (4 columns) */}
+          <div className="lg:col-span-4 space-y-6">
+            <p className="text-cyan-400 font-semibold">Sobre Nós</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+              Sua próxima aventura{' '}
+              <span className="gradient-text">começa aqui</span>
+            </h2>
 
-            <div className="space-y-4 text-white/70 text-lg">
+            <div className="space-y-4 text-white/70">
               <p>
                 {config?.sobre_texto || 'Somos uma empresa de turismo de aventura do Espírito Santo, especializada em trilhas, viagens a praias, campings e expedições noturnas.'}
               </p>
@@ -43,13 +41,13 @@ const SobreSection = ({ config }) => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 py-8">
+            <div className="grid grid-cols-3 gap-4 py-6">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <p className="text-3xl md:text-4xl font-bold gradient-text">
+                  <p className="text-3xl font-bold gradient-text">
                     {stat.number}
                   </p>
-                  <p className="text-white/60 text-sm mt-1">{stat.label}</p>
+                  <p className="text-white/50 text-sm">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -59,61 +57,50 @@ const SobreSection = ({ config }) => {
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 text-white font-semibold group"
+              className="inline-flex items-center gap-3 group"
             >
               <span className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 flex items-center justify-center">
-                <Instagram size={24} />
+                <Instagram size={24} className="text-white" />
               </span>
-              <span className="group-hover:text-cyan-400 transition-colors">
+              <span className="text-white font-medium group-hover:text-cyan-400 transition-colors">
                 Siga-nos no Instagram
               </span>
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={20} className="text-white/60 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
 
-          {/* Right Column - Image Grid */}
-          <div className="lg:col-span-3">
+          {/* Right Column - Images (8 columns) */}
+          <div className="lg:col-span-8">
             <div className="grid grid-cols-2 gap-4">
-              {/* Large image */}
-              <div className="col-span-2 md:col-span-1 md:row-span-2">
-                <div className="relative group overflow-hidden rounded-2xl h-64 md:h-full">
+              {/* Large image on the left */}
+              <div className="row-span-2">
+                <div className="relative h-full min-h-[500px] rounded-2xl overflow-hidden group">
                   <img
                     src={images[0]}
                     alt="Aventura nas trilhas"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </div>
 
-              {/* Small images */}
-              <div className="relative group overflow-hidden rounded-2xl h-48 md:h-auto">
+              {/* Smaller images on the right */}
+              <div className="relative h-60 rounded-2xl overflow-hidden group">
                 <img
                   src={images[1]}
                   alt="Trilha na montanha"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
 
-              <div className="relative group overflow-hidden rounded-2xl h-48 md:h-auto">
+              <div className="relative h-60 rounded-2xl overflow-hidden group">
                 <img
                   src={images[2]}
                   alt="Camping na natureza"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-
-              {/* Wide bottom image */}
-              <div className="col-span-2 relative group overflow-hidden rounded-2xl h-48">
-                <img
-                  src={images[3]}
-                  alt="Expedição noturna"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

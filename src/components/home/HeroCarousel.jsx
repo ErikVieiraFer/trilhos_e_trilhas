@@ -25,10 +25,10 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
     }
   }
 
-  // Sync external navigation
+  // Sync external navigation - with check to prevent infinite loop
   useEffect(() => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.slideTo(activeIndex)
+    if (swiperRef.current?.swiper && swiperRef.current.swiper.realIndex !== activeIndex) {
+      swiperRef.current.swiper.slideTo(activeIndex, 800)
     }
   }, [activeIndex])
 
@@ -48,7 +48,7 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
   }
 
   return (
-    <section id="viagens" className="relative h-screen">
+    <section id="viagens" className="relative h-screen pt-20">
       <Swiper
         ref={swiperRef}
         modules={[Navigation, Pagination, EffectFade, Autoplay]}
@@ -64,7 +64,8 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
         }}
         autoplay={{
           delay: 6000,
-          disableOnInteraction: true
+          disableOnInteraction: true,
+          pauseOnMouseEnter: true
         }}
         loop={viagens.length > 1}
         onSlideChange={handleSlideChange}
@@ -85,36 +86,29 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-950/60 to-transparent" />
               </div>
 
-              {/* Content */}
+              {/* Content - Simplified */}
               <div className="relative h-full flex flex-col justify-end pb-32 md:pb-40">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
                   <div className="max-w-2xl animate-fadeInUp">
-                    {/* Difficulty Badge */}
+                    {/* Difficulty Badge - Small */}
                     <span
-                      className={`inline-block px-3 py-1 rounded-full text-sm font-medium text-white mb-4 ${getDifficultyColor(viagem.dificuldade)}`}
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white mb-3 ${getDifficultyColor(viagem.dificuldade)}`}
                     >
                       {viagem.dificuldade}
                     </span>
 
                     {/* Title */}
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight">
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight">
                       {viagem.titulo}
                     </h1>
 
                     {/* Location */}
-                    <div className="flex items-center gap-2 text-white/80 text-lg md:text-xl">
+                    <div className="flex items-center gap-2 text-white/90 text-lg">
                       <MapPin size={20} className="text-cyan-400" />
                       <span>{viagem.destino}</span>
                       <span className="text-pink-400">•</span>
                       <span>{viagem.estado}</span>
                     </div>
-
-                    {/* Short Description */}
-                    {viagem.descricao_curta && (
-                      <p className="mt-4 text-white/70 text-lg max-w-lg hidden md:block">
-                        {viagem.descricao_curta}
-                      </p>
-                    )}
                   </div>
                 </div>
               </div>
@@ -144,11 +138,10 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
       {/* Scroll Indicator */}
       <button
         onClick={scrollToDetails}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-white/60 hover:text-white transition-colors"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center text-white/60 hover:text-white transition-colors"
         aria-label="Ver detalhes"
       >
-        <span className="text-sm font-medium hidden md:block">Ver Detalhes</span>
-        <ChevronDown size={28} className="animate-bounce-slow" />
+        <ChevronDown size={32} className="animate-bounce-slow" />
       </button>
     </section>
   )

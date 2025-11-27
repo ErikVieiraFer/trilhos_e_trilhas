@@ -45,23 +45,23 @@ const Header = () => {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center">
             <span className="text-2xl font-bold gradient-text">
               Trilhos & Trilhas
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Centered with spacing */}
+          <nav className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => scrollToSection(e, link.href)}
-                className="text-white/80 hover:text-white transition-colors font-medium"
+                className="text-white/80 hover:text-white transition-colors font-medium text-sm uppercase tracking-wide"
               >
                 {link.label}
               </a>
@@ -70,7 +70,7 @@ const Header = () => {
               href={getWhatsAppLink(import.meta.env.VITE_WHATSAPP_NUMBER, 'Olá! Vim pelo site e gostaria de saber mais sobre as viagens.')}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-gradient px-6 py-2.5 rounded-full text-white font-semibold"
+              className="ml-6 btn-gradient px-6 py-2.5 rounded-full text-white font-semibold text-sm"
             >
               Fale Conosco
             </a>
