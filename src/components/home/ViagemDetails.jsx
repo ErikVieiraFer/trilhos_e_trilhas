@@ -41,19 +41,19 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
   }
 
   return (
-    <section id="viagem-details" className="py-16 md:py-24 bg-gradient-to-b from-blue-950 to-blue-900">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        {/* Header da viagem */}
-        <div className="mb-8">
+    <section id="viagem-details" className="section-spacing bg-gradient-to-b from-blue-950 to-blue-900">
+      <div className="container-centered">
+        {/* Header da viagem - Centralizado */}
+        <div className="text-center mb-12">
           <span
             className={`inline-block px-4 py-1.5 rounded-full text-sm font-semibold text-white mb-4 ${getDifficultyColor(viagem.dificuldade)}`}
           >
             {viagem.dificuldade}
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
             {viagem.titulo}
           </h2>
-          <p className="text-white/60 text-lg">
+          <p className="text-white/60 text-lg md:text-xl">
             {viagem.descricao_curta || `${viagem.destino} - ${viagem.estado}`}
           </p>
         </div>

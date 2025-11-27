@@ -190,21 +190,77 @@ select:focus {
   aspect-ratio: 1 / 1;
 }
 
-/* Container with max-width */
-.container-custom {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
+/* Container centralizado com muito padding */
+.container-centered {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 @media (min-width: 640px) {
-  .container-custom {
-    padding: 0 1.5rem;
+  .container-centered {
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .container-custom {
-    padding: 0 2rem;
+  .container-centered {
+    padding-left: 6rem;
+    padding-right: 6rem;
   }
+}
+
+@media (min-width: 1280px) {
+  .container-centered {
+    padding-left: 8rem;
+    padding-right: 8rem;
+  }
+}
+
+/* Section spacing - maior espaco entre secoes */
+.section-spacing {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-spacing {
+    padding-top: 12rem;
+    padding-bottom: 12rem;
+  }
+}
+
+/* CTA section - ainda maior */
+.section-cta {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
+
+@media (min-width: 768px) {
+  .section-cta {
+    padding-top: 14rem;
+    padding-bottom: 14rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-cta {
+    padding-top: 16rem;
+    padding-bottom: 16rem;
+  }
+}
+
+/* Texto centralizado */
+.text-centered {
+  text-align: center;
 }

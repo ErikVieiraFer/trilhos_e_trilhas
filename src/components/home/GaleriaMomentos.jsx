@@ -41,20 +41,20 @@ const GaleriaMomentos = ({ fotos, loading }) => {
   }
 
   return (
-    <section id="galeria" className="py-16 md:py-24 bg-gradient-to-b from-blue-900 to-blue-950">
-      {/* Header centralizado */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 text-center mb-12">
-        <p className="text-cyan-400 font-semibold mb-2">Galeria</p>
-        <h2 className="text-4xl md:text-5xl font-bold text-white">
-          Momentos <span className="gradient-text">Inesquecíveis</span>
-        </h2>
-        <p className="mt-4 text-white/60 max-w-2xl mx-auto">
-          Confira algumas fotos das nossas aventuras e dos nossos aventureiros
-        </p>
-      </div>
+    <section id="galeria" className="section-spacing bg-gradient-to-b from-blue-900 to-blue-950">
+      <div className="container-centered">
+        {/* Header centralizado */}
+        <div className="text-center mb-12">
+          <p className="text-cyan-400 font-semibold mb-4">Galeria</p>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+            Momentos <span className="gradient-text">Inesquecíveis</span>
+          </h2>
+          <p className="text-white/60 text-lg max-w-2xl mx-auto">
+            Confira algumas fotos das nossas aventuras e dos nossos aventureiros
+          </p>
+        </div>
 
-      {/* Grid de fotos - mais largo */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        {/* Grid de fotos - centralizado */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {fotos.map((foto, index) => {
             const isLarge = index === 0 || index === 3

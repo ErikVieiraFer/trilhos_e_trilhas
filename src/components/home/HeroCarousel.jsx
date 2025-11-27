@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, EffectFade, Autoplay } from 'swiper/modules'
+import { Navigation, Pagination, EffectFade } from 'swiper/modules'
 import { ChevronLeft, ChevronRight, ChevronDown, MapPin } from 'lucide-react'
 import { getDifficultyColor } from '../../lib/utils'
 
@@ -11,6 +11,8 @@ import 'swiper/css/effect-fade'
 
 const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
   const swiperRef = useRef(null)
+  const intervalRef = useRef(null)
+  const [autoplayActive, setAutoplayActive] = useState(true)
 
   const scrollToDetails = () => {
     const detailsSection = document.getElementById('viagem-details')
@@ -19,18 +21,67 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
     }
   }
 
+  // Para o autoplay permanentemente quando usuário interage
+  const stopAutoplay = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+    setAutoplayActive(false)
+  }
+
   const handleSlideChange = (swiper) => {
     if (onSlideChange) {
       onSlideChange(swiper.realIndex)
     }
   }
 
-  // Sync external navigation - with check to prevent infinite loop
+  // Autoplay manual com setInterval
   useEffect(() => {
-    if (swiperRef.current?.swiper && swiperRef.current.swiper.realIndex !== activeIndex) {
-      swiperRef.current.swiper.slideTo(activeIndex, 800)
+    if (!viagens || viagens.length <= 1 || !autoplayActive) return
+
+    intervalRef.current = setInterval(() => {
+      if (swiperRef.current?.swiper) {
+        swiperRef.current.swiper.slideNext()
+      }
+    }, 3000) // 3 segundos
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [viagens, autoplayActive])
+
+  // Sync quando o índice muda externamente (pelos botões na seção de detalhes)
+  useEffect(() => {
+    if (swiperRef.current?.swiper) {
+      const swiper = swiperRef.current.swiper
+      if (swiper.realIndex !== activeIndex) {
+        stopAutoplay() // Para o autoplay quando muda pela seção de detalhes
+        swiper.slideToLoop(activeIndex, 800)
+      }
     }
   }, [activeIndex])
+
+  // Para o autoplay quando scrollar para fora da seção do carousel
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!autoplayActive) return
+
+      const heroSection = document.getElementById('viagens')
+      if (heroSection) {
+        const rect = heroSection.getBoundingClientRect()
+        // Se a seção do hero saiu da tela (scrollou pra baixo)
+        if (rect.bottom < window.innerHeight * 0.5) {
+          stopAutoplay()
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [autoplayActive])
 
   if (!viagens || viagens.length === 0) {
     return (
@@ -51,7 +102,7 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
     <section id="viagens" className="relative h-screen pt-20">
       <Swiper
         ref={swiperRef}
-        modules={[Navigation, Pagination, EffectFade, Autoplay]}
+        modules={[Navigation, Pagination, EffectFade]}
         effect="fade"
         speed={800}
         navigation={{
@@ -62,13 +113,11 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
           clickable: true,
           dynamicBullets: true
         }}
-        autoplay={{
-          delay: 6000,
-          disableOnInteraction: true,
-          pauseOnMouseEnter: true
-        }}
         loop={viagens.length > 1}
         onSlideChange={handleSlideChange}
+        onTouchStart={stopAutoplay}
+        onNavigationNext={stopAutoplay}
+        onNavigationPrev={stopAutoplay}
         className="h-full"
       >
         {viagens.map((viagem, index) => (
@@ -82,33 +131,30 @@ const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
                 }}
               >
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-950/40 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-950/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-950/50 to-blue-950/20" />
               </div>
 
-              {/* Content - Simplified */}
-              <div className="relative h-full flex flex-col justify-end pb-32 md:pb-40">
-                <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
-                  <div className="max-w-2xl animate-fadeInUp">
-                    {/* Difficulty Badge - Small */}
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white mb-3 ${getDifficultyColor(viagem.dificuldade)}`}
-                    >
-                      {viagem.dificuldade}
-                    </span>
+              {/* Content - Centralizado */}
+              <div className="relative h-full flex flex-col items-center justify-center">
+                <div className="text-center animate-fadeInUp px-8 sm:px-16 lg:px-24">
+                  {/* Difficulty Badge */}
+                  <span
+                    className={`inline-block px-4 py-1.5 rounded-full text-xs font-semibold text-white mb-4 ${getDifficultyColor(viagem.dificuldade)}`}
+                  >
+                    {viagem.dificuldade}
+                  </span>
 
-                    {/* Title */}
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight">
-                      {viagem.titulo}
-                    </h1>
+                  {/* Title */}
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                    {viagem.titulo}
+                  </h1>
 
-                    {/* Location */}
-                    <div className="flex items-center gap-2 text-white/90 text-lg">
-                      <MapPin size={20} className="text-cyan-400" />
-                      <span>{viagem.destino}</span>
-                      <span className="text-pink-400">•</span>
-                      <span>{viagem.estado}</span>
-                    </div>
+                  {/* Location */}
+                  <div className="flex items-center justify-center gap-2 text-white/90 text-lg md:text-xl">
+                    <MapPin size={22} className="text-cyan-400" />
+                    <span>{viagem.destino}</span>
+                    <span className="text-pink-400">•</span>
+                    <span>{viagem.estado}</span>
                   </div>
                 </div>
               </div>
