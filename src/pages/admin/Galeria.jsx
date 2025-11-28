@@ -96,7 +96,7 @@ const Galeria = () => {
   if (loading) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center h-64">
+        <div className="flex items-center justify-center h-96">
           <LoadingSpinner size="lg" />
         </div>
       </AdminLayout>
@@ -105,184 +105,190 @@ const Galeria = () => {
 
   return (
     <AdminLayout>
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white">Galeria de Momentos</h1>
-          <p className="text-white/60 mt-1">Gerencie as fotos exibidas no site</p>
-        </div>
-        <div className="relative">
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            multiple
-            onChange={handleUpload}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            disabled={uploading}
-          />
-          <button
-            disabled={uploading}
-            className="btn-gradient px-4 py-2 rounded-lg text-white font-medium flex items-center gap-2 justify-center disabled:opacity-50"
-          >
-            {uploading ? (
-              <>
-                <LoadingSpinner size="sm" />
-                Enviando... {progress}%
-              </>
-            ) : (
-              <>
-                <Upload size={18} />
-                Adicionar Fotos
-              </>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Gallery Grid */}
-      {fotos.length === 0 ? (
-        <div className="glass rounded-xl p-12 text-center">
-          <Image size={48} className="mx-auto text-white/20 mb-4" />
-          <p className="text-white/60 mb-4">Nenhuma foto na galeria</p>
-          <div className="relative inline-block">
+      <>
+        {/* Header */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-white mb-2">Galeria de Momentos</h1>
+            <p className="text-white/60 text-lg">Gerencie as fotos exibidas na seção de momentos</p>
+          </div>
+          <div className="relative">
             <input
+              ref={inputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
               multiple
               onChange={handleUpload}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              disabled={uploading}
             />
-            <span className="text-cyan-400 hover:text-cyan-300 cursor-pointer">
-              Clique para adicionar fotos
-            </span>
+            <button
+              disabled={uploading}
+              className="btn-gradient px-6 py-4 rounded-2xl text-white font-semibold text-lg flex items-center gap-3 justify-center disabled:opacity-50"
+            >
+              {uploading ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  Enviando... {progress}%
+                </>
+              ) : (
+                <>
+                  <Upload size={24} />
+                  Adicionar Fotos
+                </>
+              )}
+            </button>
           </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {fotos.map((foto, index) => (
-            <div
-              key={foto.id}
-              className={`glass rounded-xl overflow-hidden ${!foto.ativo ? 'opacity-60' : ''}`}
-            >
-              {/* Image */}
-              <div className="aspect-square relative group">
-                <img
-                  src={foto.imagem_url}
-                  alt={foto.legenda || `Foto ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                  <button
-                    onClick={() => handleMoveUp(index)}
-                    disabled={index === 0}
-                    className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 disabled:opacity-30"
-                    title="Mover para cima"
-                  >
-                    <ChevronUp size={18} />
-                  </button>
-                  <button
-                    onClick={() => handleMoveDown(index)}
-                    disabled={index === fotos.length - 1}
-                    className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 disabled:opacity-30"
-                    title="Mover para baixo"
-                  >
-                    <ChevronDown size={18} />
-                  </button>
-                </div>
-              </div>
 
-              {/* Info & Actions */}
-              <div className="p-4">
-                {editingId === foto.id ? (
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={editLegenda}
-                      onChange={(e) => setEditLegenda(e.target.value)}
-                      placeholder="Legenda da foto"
-                      className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm"
-                      autoFocus
-                    />
+        {/* Gallery Grid */}
+        {fotos.length === 0 ? (
+          <div className="glass rounded-3xl p-12 md:p-16 text-center">
+            <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-8">
+              <Image size={48} className="text-white/40" />
+            </div>
+            <p className="text-white/60 text-xl mb-6">Nenhuma foto na galeria</p>
+            <div className="relative inline-block">
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                onChange={handleUpload}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+              <span className="btn-gradient px-8 py-4 rounded-2xl text-white font-semibold text-lg inline-flex items-center gap-3 cursor-pointer">
+                <Upload size={24} />
+                Clique para adicionar fotos
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {fotos.map((foto, index) => (
+              <div
+                key={foto.id}
+                className={`glass rounded-2xl overflow-hidden group ${!foto.ativo ? 'opacity-60' : ''}`}
+              >
+                {/* Image */}
+                <div className="aspect-square relative overflow-hidden">
+                  <img
+                    src={foto.imagem_url}
+                    alt={foto.legenda || `Foto ${index + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <button
-                      onClick={handleSaveEdit}
-                      className="p-2 text-green-400 hover:bg-green-500/10 rounded-lg"
+                      onClick={() => handleMoveUp(index)}
+                      disabled={index === 0}
+                      className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 disabled:opacity-30 transition-all"
+                      title="Mover para cima"
                     >
-                      <Check size={18} />
+                      <ChevronUp size={20} />
                     </button>
                     <button
-                      onClick={handleCancelEdit}
-                      className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"
+                      onClick={() => handleMoveDown(index)}
+                      disabled={index === fotos.length - 1}
+                      className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 disabled:opacity-30 transition-all"
+                      title="Mover para baixo"
                     >
-                      <X size={18} />
+                      <ChevronDown size={20} />
                     </button>
                   </div>
-                ) : (
-                  <>
-                    <p className="text-white/60 text-sm mb-3 truncate">
-                      {foto.legenda || 'Sem legenda'}
-                    </p>
-                    <div className="flex items-center justify-between">
+                </div>
+
+                {/* Info & Actions */}
+                <div className="p-5">
+                  {editingId === foto.id ? (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={editLegenda}
+                        onChange={(e) => setEditLegenda(e.target.value)}
+                        placeholder="Legenda da foto"
+                        className="flex-1 px-4 py-3 bg-white/10 border-2 border-white/10 rounded-xl text-white text-sm placeholder-white/30 focus:border-cyan-500/50 focus:outline-none transition-all"
+                        autoFocus
+                      />
                       <button
-                        onClick={() => handleToggleAtivo(foto.id, foto.ativo)}
-                        className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-                          foto.ativo
-                            ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
-                            : 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
-                        }`}
+                        onClick={handleSaveEdit}
+                        className="p-3 text-green-400 hover:bg-green-500/10 rounded-xl transition-all"
                       >
-                        {foto.ativo ? 'Visível' : 'Oculta'}
+                        <Check size={20} />
                       </button>
-                      <div className="flex gap-1">
-                        <button
-                          onClick={() => handleStartEdit(foto)}
-                          className="p-2 text-white/40 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg"
-                          title="Editar legenda"
-                        >
-                          <Edit2 size={16} />
-                        </button>
-                        <button
-                          onClick={() => setDeleteConfirm(foto.id)}
-                          className="p-2 text-white/40 hover:text-red-400 hover:bg-red-500/10 rounded-lg"
-                          title="Excluir"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
+                      <button
+                        onClick={handleCancelEdit}
+                        className="p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+                      >
+                        <X size={20} />
+                      </button>
                     </div>
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <p className="text-white/80 text-base truncate mb-4">
+                        {foto.legenda || 'Sem legenda'}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <button
+                          onClick={() => handleToggleAtivo(foto.id, foto.ativo)}
+                          className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-all ${
+                            foto.ativo
+                              ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+                              : 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
+                          }`}
+                        >
+                          {foto.ativo ? 'Visível' : 'Oculta'}
+                        </button>
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => handleStartEdit(foto)}
+                            className="p-2.5 text-white/40 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-xl transition-all"
+                            title="Editar legenda"
+                          >
+                            <Edit2 size={18} />
+                          </button>
+                          <button
+                            onClick={() => setDeleteConfirm(foto.id)}
+                            className="p-2.5 text-white/40 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+                            title="Excluir"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {deleteConfirm && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="glass rounded-2xl p-8 max-w-md w-full">
+              <h3 className="text-2xl font-bold text-white mb-4">Confirmar exclusão</h3>
+              <p className="text-white/60 text-lg mb-8">
+                Tem certeza que deseja excluir esta foto? Esta ação não pode ser desfeita.
+              </p>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="px-6 py-3 rounded-xl border-2 border-white/20 text-white font-semibold hover:bg-white/5 transition-all"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => handleDelete(deleteConfirm)}
+                  className="px-6 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition-all"
+                >
+                  Excluir
+                </button>
               </div>
             </div>
-          ))}
-        </div>
-      )}
-
-      {/* Delete Confirmation Modal */}
-      {deleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="glass rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-bold text-white mb-2">Confirmar exclusão</h3>
-            <p className="text-white/60 mb-6">
-              Tem certeza que deseja excluir esta foto? Esta ação não pode ser desfeita.
-            </p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setDeleteConfirm(null)}
-                className="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() => handleDelete(deleteConfirm)}
-                className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
-              >
-                Excluir
-              </button>
-            </div>
           </div>
-        </div>
-      )}
+        )}
+      </>
     </AdminLayout>
   )
 }

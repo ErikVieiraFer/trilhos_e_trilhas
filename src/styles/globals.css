@@ -79,9 +79,24 @@ body {
 
 /* Glass effect */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glass card with padding - for admin panels */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .glass-card {
+    padding: 2rem;
+  }
 }
 
 /* Animation utilities */
@@ -263,4 +278,312 @@ select:focus {
 /* Texto centralizado */
 .text-centered {
   text-align: center;
+}
+
+/* ===========================================
+   Admin Panel Styles
+   =========================================== */
+
+/* Admin Layout - Main content area spacing */
+/* Mobile: header is h-16 (4rem), so we need pt > 4rem */
+.admin-main-content {
+  padding-top: 7rem;  /* 4rem header + 3rem space */
+  padding-bottom: 4rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .admin-main-content {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-main-content {
+    padding-top: 7rem;
+    padding-bottom: 5rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Desktop: no header, sidebar is fixed */
+@media (min-width: 1024px) {
+  .admin-main-content {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .admin-main-content {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+/* Admin Sidebar spacing */
+.admin-sidebar-content {
+  padding: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .admin-sidebar-content {
+    padding: 1.5rem;
+  }
+}
+
+.admin-input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.admin-input:focus {
+  outline: none;
+  border-color: rgba(6, 182, 212, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.admin-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .admin-card {
+    padding: 2.5rem;
+  }
+}
+
+.admin-label {
+  display: block;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+/* Select customizado */
+select.admin-input,
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 1rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 3rem;
+}
+
+/* Toggle switch customizado */
+.toggle-switch {
+  position: relative;
+  width: 3rem;
+  height: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+.toggle-switch.active {
+  background: var(--cyan-500);
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: white;
+  border-radius: 9999px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.toggle-switch.active::after {
+  transform: translateX(1.5rem);
+}
+
+/* Date input customizado para WebKit */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+/* Number input - esconder setas em alguns navegadores */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* ===========================================
+   Premium Card Styles
+   =========================================== */
+
+/* Premium Card Style */
+.premium-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 2rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+}
+
+/* Premium Input */
+.premium-input {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 1rem;
+  color: white;
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+}
+
+.premium-input:focus {
+  outline: none;
+  border-color: rgba(6, 182, 212, 0.5);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+}
+
+.premium-input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+/* Glow effects on hover */
+.glow-cyan:hover {
+  box-shadow: 0 0 40px rgba(6, 182, 212, 0.3);
+}
+
+.glow-pink:hover {
+  box-shadow: 0 0 40px rgba(236, 72, 153, 0.3);
+}
+
+.glow-green:hover {
+  box-shadow: 0 0 40px rgba(34, 197, 94, 0.3);
+}
+
+.glow-purple:hover {
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
+}
+
+/* Smooth hover transitions */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Card hover scale effect */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Premium gradient backgrounds */
+.bg-premium-gradient {
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+}
+
+/* Decorative blur circle */
+.blur-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* Admin page section spacing */
+.admin-section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .admin-section {
+    margin-bottom: 4rem;
+    padding: 2rem;
+  }
+}
+
+/* Admin content wrapper - ensures proper spacing from edges */
+.admin-content {
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .admin-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-content {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-content {
+    padding: 2.5rem;
+  }
+}
+
+/* Premium button styles */
+.btn-premium {
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+}
+
+.btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px -5px rgba(0,0,0,0.4);
+}
+
+/* Stats card decorative gradient */
+.stats-gradient-cyan {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.05) 100%);
+}
+
+.stats-gradient-pink {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(236, 72, 153, 0.05) 100%);
+}
+
+.stats-gradient-green {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.05) 100%);
+}
+
+.stats-gradient-purple {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.05) 100%);
 }

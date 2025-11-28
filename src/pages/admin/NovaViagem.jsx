@@ -27,20 +27,23 @@ const NovaViagem = () => {
 
   return (
     <AdminLayout>
-      {/* Header */}
-      <div className="mb-6">
-        <button
-          onClick={() => navigate('/admin/viagens')}
-          className="flex items-center gap-2 text-white/60 hover:text-white mb-4"
-        >
-          <ChevronLeft size={20} />
-          Voltar para viagens
-        </button>
-        <h1 className="text-2xl md:text-3xl font-bold text-white">Nova Viagem</h1>
-        <p className="text-white/60 mt-1">Cadastre uma nova viagem ou expedição</p>
-      </div>
+      <>
+        {/* Header */}
+        <div>
+          <button
+            onClick={() => navigate('/admin/viagens')}
+            className="flex items-center gap-2 text-white/60 hover:text-white"
+            style={{ marginBottom: '1rem' }}
+          >
+            <ChevronLeft size={20} />
+            Voltar para viagens
+          </button>
+          <h1 className="text-2xl md:text-3xl font-bold text-white">Nova Viagem</h1>
+          <p className="text-white/60 mt-1">Cadastre uma nova viagem ou expedição</p>
+        </div>
 
-      <ViagemForm onSubmit={handleSubmit} loading={loading} />
+        <ViagemForm onSubmit={handleSubmit} loading={loading} />
+      </>
     </AdminLayout>
   )
 }
