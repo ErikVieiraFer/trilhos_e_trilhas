@@ -235,43 +235,43 @@ select:focus {
   }
 }
 
-/* Section spacing - maior espaco entre secoes */
+/* Section spacing - espaçamento moderado entre seções */
 .section-spacing {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 @media (min-width: 768px) {
   .section-spacing {
-    padding-top: 10rem;
-    padding-bottom: 10rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .section-spacing {
-    padding-top: 12rem;
-    padding-bottom: 12rem;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
   }
 }
 
-/* CTA section - ainda maior */
+/* CTA section - espaçamento maior para destaque */
 .section-cta {
-  padding-top: 10rem;
-  padding-bottom: 10rem;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
 @media (min-width: 768px) {
   .section-cta {
-    padding-top: 14rem;
-    padding-bottom: 14rem;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
   }
 }
 
 @media (min-width: 1024px) {
   .section-cta {
-    padding-top: 16rem;
-    padding-bottom: 16rem;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
   }
 }
 
@@ -287,43 +287,36 @@ select:focus {
 /* Admin Layout - Main content area spacing */
 /* Mobile: header is h-16 (4rem), so we need pt > 4rem */
 .admin-main-content {
-  padding-top: 7rem;  /* 4rem header + 3rem space */
-  padding-bottom: 4rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
   width: 100%;
-}
-
-@media (min-width: 640px) {
-  .admin-main-content {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
 }
 
 @media (min-width: 768px) {
   .admin-main-content {
-    padding-top: 7rem;
-    padding-bottom: 5rem;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
+    padding-top: 5rem;
+    padding-bottom: 6rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 }
 
 /* Desktop: no header, sidebar is fixed */
 @media (min-width: 1024px) {
   .admin-main-content {
-    padding-top: 3rem;
-    padding-bottom: 5rem;
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding-top: 4rem;
+    padding-bottom: 6rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
   }
 }
 
 @media (min-width: 1280px) {
   .admin-main-content {
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: 6rem;
+    padding-right: 6rem;
   }
 }
 

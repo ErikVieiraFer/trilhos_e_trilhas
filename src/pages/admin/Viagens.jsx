@@ -67,33 +67,36 @@ const Viagens = () => {
 
   return (
     <AdminLayout>
-      <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
         {/* Header */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between" style={{ gap: '1.5rem', paddingTop: '1.5rem' }}>
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Viagens</h1>
+            <h1 className="text-4xl font-bold text-white mb-3">Viagens</h1>
             <p className="text-white/60 text-lg">Gerencie suas viagens e expedições</p>
           </div>
           <Link
             to="/admin/viagens/nova"
-            className="btn-gradient px-6 py-4 rounded-2xl text-white font-semibold text-lg flex items-center gap-3 justify-center"
+            className="btn-gradient px-8 py-4 rounded-2xl text-white font-semibold text-lg flex items-center gap-3 justify-center"
           >
-            <Plus size={24} />
+            <Plus size={22} />
             Nova Viagem
           </Link>
         </div>
 
         {/* Filters */}
-        <div className="glass rounded-2xl p-6">
+        <div className="glass rounded-2xl" style={{ padding: '2rem' }}>
           <div className="flex flex-col sm:flex-row gap-5">
             <div className="relative flex-1">
-              <Search size={22} className="absolute left-5 top-1/2 -translate-y-1/2 text-white/40" />
+              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none">
+                <Search size={22} />
+              </div>
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Buscar viagens..."
-                className="w-full pl-14 pr-6 py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                style={{ paddingLeft: '3.5rem', paddingRight: '1.5rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
               />
             </div>
             <div className="flex gap-3">
@@ -115,7 +118,7 @@ const Viagens = () => {
         </div>
 
         {/* Table */}
-        <div className="glass rounded-2xl overflow-hidden">
+        <div className="glass rounded-2xl overflow-hidden" style={{ padding: '2rem' }}>
           {filteredViagens.length === 0 ? (
             <div className="p-16 text-center">
               <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-8">
@@ -139,18 +142,18 @@ const Viagens = () => {
               <table className="w-full">
                 <thead>
                   <tr className="bg-white/5">
-                    <th className="text-left py-6 px-6 text-white/60 font-semibold text-base">Viagem</th>
-                    <th className="text-left py-6 px-6 text-white/60 font-semibold text-base hidden md:table-cell">Data</th>
-                    <th className="text-left py-6 px-6 text-white/60 font-semibold text-base hidden lg:table-cell">Preço</th>
-                    <th className="text-left py-6 px-6 text-white/60 font-semibold text-base hidden sm:table-cell">Vagas</th>
-                    <th className="text-left py-6 px-6 text-white/60 font-semibold text-base">Status</th>
-                    <th className="text-right py-6 px-6 text-white/60 font-semibold text-base">Ações</th>
+                    <th className="text-left text-white/60 font-semibold text-base" style={{ padding: '1.5rem 1.5rem' }}>Viagem</th>
+                    <th className="text-left text-white/60 font-semibold text-base hidden md:table-cell" style={{ padding: '1.5rem 1.5rem' }}>Data</th>
+                    <th className="text-left text-white/60 font-semibold text-base hidden lg:table-cell" style={{ padding: '1.5rem 1.5rem' }}>Preço</th>
+                    <th className="text-left text-white/60 font-semibold text-base hidden sm:table-cell" style={{ padding: '1.5rem 1.5rem' }}>Vagas</th>
+                    <th className="text-left text-white/60 font-semibold text-base" style={{ padding: '1.5rem 1.5rem' }}>Status</th>
+                    <th className="text-right text-white/60 font-semibold text-base" style={{ padding: '1.5rem 1.5rem' }}>Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredViagens.map((viagem, index) => (
                     <tr key={viagem.id} className="border-t border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="py-6 px-6">
+                      <td style={{ padding: '1.5rem 1.5rem' }}>
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white/10 flex-shrink-0 shadow-lg">
                             {viagem.imagem_principal ? (
@@ -171,16 +174,16 @@ const Viagens = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="py-6 px-6 text-white/60 text-base hidden md:table-cell">
+                      <td className="text-white/60 text-base hidden md:table-cell" style={{ padding: '1.5rem 1.5rem' }}>
                         {formatDateShort(viagem.data_viagem)}
                       </td>
-                      <td className="py-6 px-6 text-white/60 text-base hidden lg:table-cell">
+                      <td className="text-white/60 text-base hidden lg:table-cell" style={{ padding: '1.5rem 1.5rem' }}>
                         {formatCurrency(viagem.preco)}
                       </td>
-                      <td className="py-6 px-6 text-white/60 text-base hidden sm:table-cell">
+                      <td className="text-white/60 text-base hidden sm:table-cell" style={{ padding: '1.5rem 1.5rem' }}>
                         <span className="font-semibold">{viagem.vagas_disponiveis}</span>/{viagem.vagas_total}
                       </td>
-                      <td className="py-6 px-6">
+                      <td style={{ padding: '1.5rem 1.5rem' }}>
                         <button
                           onClick={() => handleToggleAtivo(viagem.id, viagem.ativo)}
                           className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
@@ -192,7 +195,7 @@ const Viagens = () => {
                           {viagem.ativo ? 'Ativo' : 'Inativo'}
                         </button>
                       </td>
-                      <td className="py-6 px-6">
+                      <td style={{ padding: '1.5rem 1.5rem' }}>
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handleMoveUp(index)}
@@ -259,7 +262,7 @@ const Viagens = () => {
             </div>
           </div>
         )}
-      </>
+      </div>
     </AdminLayout>
   )
 }

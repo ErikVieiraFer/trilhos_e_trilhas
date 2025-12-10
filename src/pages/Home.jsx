@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import Header from '../components/common/Header'
 import Footer from '../components/common/Footer'
-import WhatsAppButton from '../components/common/WhatsAppButton'
 import SEO from '../components/common/SEO'
 import HeroCarousel from '../components/home/HeroCarousel'
 import ViagemDetails from '../components/home/ViagemDetails'
 import SobreSection from '../components/home/SobreSection'
 import GaleriaMomentos from '../components/home/GaleriaMomentos'
+import FAQSection from '../components/home/FAQSection'
 import FooterCTA from '../components/home/FooterCTA'
 import { PageLoader } from '../components/common/LoadingSpinner'
 import { useViagens } from '../hooks/useViagens'
@@ -139,12 +139,14 @@ const Home = () => {
         {/* Galeria de Momentos */}
         <GaleriaMomentos fotos={displayFotos} loading={galeriaLoading} />
 
+        {/* FAQ Section */}
+        <FAQSection />
+
         {/* Footer CTA */}
         <FooterCTA config={config} />
       </main>
 
       <Footer />
-      <WhatsAppButton />
     </>
   )
 }

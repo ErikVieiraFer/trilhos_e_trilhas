@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { LogIn, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { LogIn, Eye, EyeOff, AlertCircle, Mail, Lock, ArrowLeft } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
-import LoadingSpinner from '../../components/common/LoadingSpinner'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -39,89 +38,114 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-950 to-blue-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        {/* Logo */}
+
+        {/* Logo Card */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold gradient-text">Trilhos & Trilhas</h1>
-          <p className="text-white/60 mt-2">Painel Administrativo</p>
+          <h1 className="text-4xl font-bold gradient-text mb-2">Trilhos & Trilhas</h1>
+          <p className="text-white/50 text-lg">Painel Administrativo</p>
         </div>
 
         {/* Login Card */}
-        <div className="glass rounded-2xl p-8">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">Entrar</h2>
+        <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden">
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg flex items-center gap-3 text-red-300">
-              <AlertCircle size={20} />
-              <span>{error}</span>
-            </div>
-          )}
+          {/* Card Header */}
+          <div className="bg-gradient-to-r from-cyan-500/20 to-pink-500/20 border-b border-white/10" style={{ padding: '2rem 2.5rem' }}>
+            <h2 className="text-2xl font-bold text-white text-center">Entrar</h2>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label htmlFor="email" className="block text-white/80 text-sm font-medium mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="seu@email.com"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:border-cyan-500 transition-colors"
-                disabled={loading}
-              />
-            </div>
+          {/* Card Body */}
+          <div style={{ padding: '2.5rem' }}>
 
-            <div>
-              <label htmlFor="password" className="block text-white/80 text-sm font-medium mb-2">
-                Senha
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:border-cyan-500 transition-colors pr-12"
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
-                  tabIndex={-1}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
+            {/* Error Alert */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center gap-3 text-red-400">
+                <AlertCircle size={20} />
+                <span>{error}</span>
               </div>
-            </div>
+            )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full btn-gradient py-3 rounded-lg text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <LoadingSpinner size="sm" />
-              ) : (
-                <>
-                  <LogIn size={20} />
-                  Entrar
-                </>
-              )}
-            </button>
-          </form>
+            <form onSubmit={handleSubmit} className="space-y-6">
+
+              {/* Email Field */}
+              <div>
+                <label className="block text-white/70 text-sm font-medium mb-3">
+                  Email
+                </label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none">
+                    <Mail size={20} />
+                  </div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="seu@email.com"
+                    className="w-full bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                    style={{ paddingLeft: '3.5rem', paddingRight: '1rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <label className="block text-white/70 text-sm font-medium mb-3">
+                  Senha
+                </label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none">
+                    <Lock size={20} />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                    style={{ paddingLeft: '3.5rem', paddingRight: '3.5rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors z-10"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full btn-gradient rounded-xl text-white font-bold flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:hover:scale-100"
+                style={{ padding: '1.5rem', fontSize: '1.125rem', marginTop: '2rem' }}
+              >
+                {loading ? (
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <LogIn size={24} />
+                    Entrar
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         </div>
 
-        {/* Back to site */}
-        <p className="text-center mt-6">
-          <a href="/" className="text-white/60 hover:text-cyan-400 transition-colors text-sm">
-            ← Voltar ao site
-          </a>
-        </p>
+        {/* Back to Site Link */}
+        <Link
+          to="/"
+          className="flex items-center justify-center gap-3 text-white/60 hover:text-cyan-400 transition-colors font-medium"
+          style={{ marginTop: '2rem', padding: '1rem', fontSize: '1rem' }}
+        >
+          <ArrowLeft size={20} />
+          Voltar ao site
+        </Link>
       </div>
     </div>
   )

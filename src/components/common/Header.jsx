@@ -25,6 +25,7 @@ const Header = () => {
     { href: '#viagens', label: 'Viagens' },
     { href: '#sobre', label: 'Sobre' },
     { href: '#galeria', label: 'Galeria' },
+    { href: '#faq', label: 'FAQ' },
     { href: '#contato', label: 'Contato' }
   ]
 
@@ -70,7 +71,10 @@ const Header = () => {
               href={getWhatsAppLink(import.meta.env.VITE_WHATSAPP_NUMBER, 'Olá! Vim pelo site e gostaria de saber mais sobre as viagens.')}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-6 btn-gradient px-6 py-2.5 rounded-full text-white font-semibold text-sm"
+              className="ml-6 btn-gradient px-8 py-3 rounded-full text-white font-bold text-base transition-all"
+              style={{
+                boxShadow: '0 0 40px rgba(6, 182, 212, 0.6), 0 0 80px rgba(236, 72, 153, 0.4)'
+              }}
             >
               Fale Conosco
             </a>

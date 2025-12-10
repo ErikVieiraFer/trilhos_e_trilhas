@@ -76,18 +76,18 @@ const Configuracoes = () => {
 
   return (
     <AdminLayout>
-      <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
         {/* Header - CENTRALIZADO */}
-        <div style={{ textAlign: 'center' }}>
+        <div className="text-center" style={{ paddingTop: '1.5rem' }}>
           <h1 className="text-4xl font-bold text-white mb-3">Configurações</h1>
           <p className="text-white/60 text-lg">Configure as informações gerais do site</p>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
 
           {/* Card Contato */}
-          <div className="glass rounded-3xl p-8">
-            <div className="flex items-center gap-4 mb-10">
+          <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+            <div className="flex items-center gap-4" style={{ marginBottom: '2.5rem' }}>
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
                 <Phone size={28} className="text-white" />
               </div>
@@ -97,21 +97,24 @@ const Configuracoes = () => {
               </div>
             </div>
 
-            <div className="space-y-8">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               {/* WhatsApp */}
               <div>
                 <label className="block text-white text-lg font-medium mb-3">
                   WhatsApp <span className="text-pink-400">*</span>
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-cyan-400" size={22} />
+                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none">
+                    <Phone size={22} />
+                  </div>
                   <input
                     type="text"
                     name="whatsapp"
                     value={formData.whatsapp}
                     onChange={handleChange}
                     placeholder="5527999999999"
-                    className="w-full pl-14 pr-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                    className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                    style={{ paddingLeft: '3.5rem', paddingRight: '1.5rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
                   />
                 </div>
                 <p className="text-white/40 text-sm mt-2 ml-2">Formato: código do país + DDD + número (apenas números)</p>
@@ -121,14 +124,17 @@ const Configuracoes = () => {
               <div>
                 <label className="block text-white text-lg font-medium mb-3">Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-cyan-400" size={22} />
+                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none">
+                    <Mail size={22} />
+                  </div>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="contato@trilhosetrilhas.com.br"
-                    className="w-full pl-14 pr-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                    className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                    style={{ paddingLeft: '3.5rem', paddingRight: '1.5rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
                   />
                 </div>
               </div>
@@ -137,14 +143,17 @@ const Configuracoes = () => {
               <div>
                 <label className="block text-white text-lg font-medium mb-3">Instagram</label>
                 <div className="relative">
-                  <Instagram className="absolute left-5 top-1/2 -translate-y-1/2 text-pink-400" size={22} />
+                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-pink-400 pointer-events-none">
+                    <Instagram size={22} />
+                  </div>
                   <input
                     type="url"
                     name="instagram"
                     value={formData.instagram}
                     onChange={handleChange}
                     placeholder="https://instagram.com/trilhosetrilhases"
-                    className="w-full pl-14 pr-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-pink-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                    className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-pink-500/50 focus:bg-white/10 focus:outline-none transition-all"
+                    style={{ paddingLeft: '3.5rem', paddingRight: '1.5rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
                   />
                 </div>
               </div>
@@ -152,8 +161,8 @@ const Configuracoes = () => {
           </div>
 
           {/* Card Sobre */}
-          <div className="glass rounded-3xl p-8">
-            <div className="flex items-center gap-4 mb-10">
+          <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+            <div className="flex items-center gap-4" style={{ marginBottom: '2.5rem' }}>
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/30">
                 <Info size={28} className="text-white" />
               </div>
@@ -163,7 +172,7 @@ const Configuracoes = () => {
               </div>
             </div>
 
-            <div className="space-y-8">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               {/* Texto Sobre */}
               <div>
                 <label className="block text-white text-lg font-medium mb-3">Texto Sobre Nós</label>
@@ -231,8 +240,8 @@ const Configuracoes = () => {
           </div>
 
           {/* Card Footer */}
-          <div className="glass rounded-3xl p-8">
-            <div className="flex items-center gap-4 mb-10">
+          <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+            <div className="flex items-center gap-4" style={{ marginBottom: '2.5rem' }}>
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-lg shadow-pink-500/30">
                 <ImageIcon size={28} className="text-white" />
               </div>
@@ -255,11 +264,11 @@ const Configuracoes = () => {
           </div>
 
           {/* Botão Salvar - CENTRALIZADO */}
-          <div className="flex justify-center pt-4">
+          <div className="flex justify-center" style={{ paddingTop: '1.5rem' }}>
             <button
               type="submit"
               disabled={saving || uploading}
-              className="btn-gradient px-10 py-5 rounded-2xl text-white font-bold text-lg flex items-center gap-3 disabled:opacity-50"
+              className="btn-gradient px-12 py-5 rounded-2xl text-white font-bold text-lg flex items-center gap-3 disabled:opacity-50"
             >
               {saving || uploading ? (
                 <>
@@ -275,7 +284,7 @@ const Configuracoes = () => {
             </button>
           </div>
         </form>
-      </>
+      </div>
     </AdminLayout>
   )
 }

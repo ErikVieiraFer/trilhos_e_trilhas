@@ -154,7 +154,7 @@ const AdminLayout = ({ children }) => {
           </div>
 
           {/* Navigation - Cards maiores com mais espaçamento */}
-          <nav className="flex-1 overflow-y-auto" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <nav className="flex-1 overflow-y-auto" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {menuItems.map((item) => {
               const Icon = item.icon
               const active = isActive(item.path)
@@ -165,14 +165,18 @@ const AdminLayout = ({ children }) => {
                   to={item.path}
                   onClick={() => setSidebarOpen(false)}
                   className={`
-                    flex items-center gap-5 px-6 py-5 rounded-2xl transition-all duration-200
+                    flex items-center rounded-2xl transition-all duration-200
                     shadow-lg
-                    ${collapsed ? 'justify-center px-4' : ''}
+                    ${collapsed ? 'justify-center' : ''}
                     ${active
                       ? 'bg-gradient-to-r from-cyan-500/30 to-pink-500/30 text-white border border-white/30 shadow-cyan-500/20'
                       : 'bg-white/5 text-white/70 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20'
                     }
                   `}
+                  style={{
+                    gap: '1.25rem',
+                    padding: collapsed ? '1.25rem 1rem' : '1.25rem 1.5rem'
+                  }}
                   title={collapsed ? item.label : ''}
                 >
                   <Icon size={26} className={active ? 'text-cyan-400' : ''} />
@@ -208,10 +212,14 @@ const AdminLayout = ({ children }) => {
             )}
 
             {/* Botões */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <button
                 onClick={handleLogout}
-                className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 transition-all shadow-lg ${sidebarCollapsed && isDesktop ? 'justify-center px-3' : ''}`}
+                className={`w-full flex items-center rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 transition-all shadow-lg ${sidebarCollapsed && isDesktop ? 'justify-center' : ''}`}
+                style={{
+                  gap: '1rem',
+                  padding: sidebarCollapsed && isDesktop ? '1.25rem 0.75rem' : '1.25rem 1.25rem'
+                }}
                 title={sidebarCollapsed && isDesktop ? 'Sair da conta' : ''}
               >
                 <LogOut size={22} />
@@ -221,7 +229,11 @@ const AdminLayout = ({ children }) => {
               <Link
                 to="/"
                 target="_blank"
-                className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl bg-white/5 text-white/60 hover:text-white hover:bg-white/10 border border-white/10 transition-all shadow-lg ${sidebarCollapsed && isDesktop ? 'justify-center px-3' : ''}`}
+                className={`w-full flex items-center rounded-xl bg-white/5 text-white/60 hover:text-white hover:bg-white/10 border border-white/10 transition-all shadow-lg ${sidebarCollapsed && isDesktop ? 'justify-center' : ''}`}
+                style={{
+                  gap: '1rem',
+                  padding: sidebarCollapsed && isDesktop ? '1.25rem 0.75rem' : '1.25rem 1.25rem'
+                }}
                 title={sidebarCollapsed && isDesktop ? 'Ver site' : ''}
               >
                 <ChevronLeft size={22} />
@@ -238,7 +250,7 @@ const AdminLayout = ({ children }) => {
         style={{ marginLeft: isDesktop ? sidebarWidth : 0 }}
       >
         <div className="admin-main-content">
-          <div style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+          <div style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto', display: 'flex', flexDirection: 'column', gap: '4rem' }}>
             {children}
           </div>
         </div>

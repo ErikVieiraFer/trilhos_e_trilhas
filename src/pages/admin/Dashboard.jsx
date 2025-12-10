@@ -50,27 +50,28 @@ const Dashboard = () => {
 
   return (
     <AdminLayout>
-      <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
         {/* Header */}
-        <div style={{ textAlign: 'center' }}>
-          <h1 className="text-4xl font-bold text-white mb-3">Dashboard</h1>
-          <p className="text-white/60 text-lg">Bem-vindo ao painel administrativo</p>
+        <div className="text-center" style={{ paddingTop: '2rem', paddingBottom: '1rem' }}>
+          <h1 className="text-5xl font-bold text-white mb-4">Dashboard</h1>
+          <p className="text-white/60 text-xl">Bem-vindo ao painel administrativo</p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: '2rem' }}>
           {stats.map((stat, index) => {
             const Icon = stat.icon
             return (
               <div
                 key={index}
-                className={`relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-[2rem] p-10 border border-white/10 shadow-2xl ${stat.shadow} group hover:scale-[1.02] transition-all duration-300`}
+                className={`relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl ${stat.shadow} group hover:scale-[1.02] transition-all duration-300`}
+                style={{ padding: '2.5rem' }}
               >
                 {/* Background gradient decorativo */}
                 <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${stat.gradient} rounded-full opacity-20 blur-3xl group-hover:opacity-30 transition-opacity`} />
 
                 <div className="relative">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-6 shadow-lg ${stat.shadow}`}>
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-lg ${stat.shadow}`} style={{ marginBottom: '1.5rem' }}>
                     <Icon size={32} className="text-white" />
                   </div>
                   <p className="text-white/60 text-lg font-medium mb-2">{stat.label}</p>
@@ -82,9 +83,9 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="glass rounded-3xl p-8">
-          <h2 className="text-xl font-bold text-white mb-6">Ações Rápidas</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+          <h2 className="text-2xl font-bold text-white" style={{ marginBottom: '2rem' }}>Ações Rápidas</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: '1.5rem' }}>
             <Link
               to="/admin/viagens/nova"
               className="flex items-center gap-4 p-6 rounded-2xl bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold text-lg hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/30 transition-all"
@@ -118,8 +119,8 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Viagens */}
-        <div className="glass rounded-3xl p-8">
-          <div className="flex items-center justify-between mb-6">
+        <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+          <div className="flex items-center justify-between" style={{ marginBottom: '2rem' }}>
             <h2 className="text-2xl font-bold text-white">Viagens Recentes</h2>
             <Link
               to="/admin/viagens"
@@ -176,7 +177,7 @@ const Dashboard = () => {
             </div>
           )}
         </div>
-      </>
+      </div>
     </AdminLayout>
   )
 }

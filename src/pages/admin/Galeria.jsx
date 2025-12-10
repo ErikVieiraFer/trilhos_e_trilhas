@@ -105,11 +105,11 @@ const Galeria = () => {
 
   return (
     <AdminLayout>
-      <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
         {/* Header */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between" style={{ gap: '1.5rem', paddingTop: '1.5rem' }}>
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Galeria de Momentos</h1>
+            <h1 className="text-4xl font-bold text-white mb-3">Galeria de Momentos</h1>
             <p className="text-white/60 text-lg">Gerencie as fotos exibidas na seção de momentos</p>
           </div>
           <div className="relative">
@@ -163,7 +163,7 @@ const Galeria = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" style={{ gap: '2rem' }}>
             {fotos.map((foto, index) => (
               <div
                 key={foto.id}
@@ -288,7 +288,7 @@ const Galeria = () => {
             </div>
           </div>
         )}
-      </>
+      </div>
     </AdminLayout>
   )
 }

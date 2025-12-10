@@ -44,203 +44,239 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
     <section id="viagem-details" className="section-spacing bg-gradient-to-b from-blue-950 to-blue-900">
       <div className="container-centered">
 
-        {/* Header da viagem - Centralizado */}
-        <div className="text-center mb-12">
-          <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-semibold text-white mb-4 ${getDifficultyColor(viagem.dificuldade)}`}>
+        {/* Header da viagem - TUDO CENTRALIZADO */}
+        <div style={{ textAlign: 'center', maxWidth: '56rem', margin: '0 auto', marginBottom: '5rem' }}>
+          <span className={`inline-block px-5 py-2 rounded-full text-sm font-semibold text-white mb-6 ${getDifficultyColor(viagem.dificuldade)}`}>
             {viagem.dificuldade}
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             {viagem.titulo}
           </h2>
           {viagem.descricao_curta && (
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            <p className="text-xl text-white/70 leading-relaxed" style={{ maxWidth: '48rem', margin: '0 auto' }}>
               {viagem.descricao_curta}
             </p>
           )}
         </div>
 
         {/* Grid principal */}
-        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
+        <div className="grid lg:grid-cols-5 gap-10 lg:gap-12">
 
-          {/* Coluna Esquerda - 3/5 */}
-          <div className="lg:col-span-3 space-y-8">
+          {/* Coluna Esquerda - 3/5 - ESPAÇAMENTO AUMENTADO */}
+          <div className="lg:col-span-3" style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
 
             {/* Descrição completa */}
-            <div className="glass rounded-2xl p-6 md:p-8">
-              <p className="text-white/80 text-lg leading-relaxed">
+            <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+              <h3 className="text-xl font-bold text-white mb-6">Sobre esta aventura</h3>
+              <p className="text-white/70 text-lg leading-relaxed">
                 {viagem.descricao}
               </p>
             </div>
 
             {/* O que está incluso */}
             {viagem.inclusos && viagem.inclusos.length > 0 && (
-              <div className="glass rounded-2xl p-6 md:p-8">
-                <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
+              <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+                <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                     <Check className="text-green-400" size={20} />
                   </div>
-                  O que está incluso
-                </h3>
-                <ul className="grid sm:grid-cols-2 gap-4">
+                  <h3 className="text-xl font-bold text-white">O que está incluso</h3>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
                   {viagem.inclusos.map((item, index) => (
-                    <li key={index} className="flex items-center gap-3 text-white/80">
+                    <div key={index} className="flex items-center gap-3 text-white/70">
                       <Check size={18} className="text-green-400 flex-shrink-0" />
                       <span>{item}</span>
-                    </li>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
 
             {/* O que NÃO está incluso */}
             {viagem.nao_inclusos && viagem.nao_inclusos.length > 0 && (
-              <div className="glass rounded-2xl p-6 md:p-8">
-                <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
+              <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+                <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
                     <X className="text-red-400" size={20} />
                   </div>
-                  O que não está incluso
-                </h3>
-                <ul className="grid sm:grid-cols-2 gap-4">
+                  <h3 className="text-xl font-bold text-white">O que não está incluso</h3>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
                   {viagem.nao_inclusos.map((item, index) => (
-                    <li key={index} className="flex items-center gap-3 text-white/80">
+                    <div key={index} className="flex items-center gap-3 text-white/70">
                       <X size={18} className="text-red-400 flex-shrink-0" />
                       <span>{item}</span>
-                    </li>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
 
             {/* O que levar */}
             {viagem.o_que_levar && viagem.o_que_levar.length > 0 && (
-              <div className="glass rounded-2xl p-6 md:p-8">
-                <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
+              <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+                <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center">
                     <Backpack className="text-cyan-400" size={20} />
                   </div>
-                  O que levar
-                </h3>
-                <ul className="grid sm:grid-cols-2 gap-4">
+                  <h3 className="text-xl font-bold text-white">O que levar</h3>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
                   {viagem.o_que_levar.map((item, index) => (
-                    <li key={index} className="flex items-center gap-3 text-white/80">
+                    <div key={index} className="flex items-center gap-3 text-white/70">
                       <Backpack size={18} className="text-cyan-400 flex-shrink-0" />
                       <span>{item}</span>
-                    </li>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
 
-            {/* Botões de ação */}
-            <div className="flex flex-wrap gap-4">
-              <a
-                href={getWhatsAppLink(whatsappNumber, whatsappMessage)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-gradient px-8 py-4 rounded-full text-white font-semibold flex items-center gap-3 text-lg"
-              >
-                <MessageCircle size={24} />
-                Reservar pelo WhatsApp
-              </a>
-              {viagem.galeria && viagem.galeria.length > 0 && (
+            {/* Botões de ação - apenas galeria aqui */}
+            {viagem.galeria && viagem.galeria.length > 0 && (
+              <div className="flex flex-wrap gap-4">
                 <button
                   onClick={() => setShowGallery(true)}
                   className="px-8 py-4 rounded-full border-2 border-white/20 text-white font-semibold flex items-center gap-3 text-lg hover:bg-white/10 transition-colors"
                 >
                   <ExternalLink size={24} />
-                  Ver Galeria
+                  Ver Galeria Completa
                 </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Coluna Direita - 2/5 - Card de Preços */}
           <div className="lg:col-span-2">
-            <div className="glass rounded-2xl p-6 md:p-8 lg:sticky lg:top-28">
+            <div className="glass rounded-3xl p-8 lg:sticky lg:top-24">
               {/* Price */}
-              <div className="text-center mb-6 pb-6 border-b border-white/10">
-                <p className="text-white/60 text-sm mb-1">A partir de</p>
-                <p className="text-4xl font-bold gradient-text">
+              <div className="text-center mb-8 pb-8 border-b border-white/10">
+                <p className="text-white/50 text-sm mb-2">A partir de</p>
+                <p className="text-5xl font-bold gradient-text">
                   {formatCurrency(viagem.preco)}
                 </p>
                 {viagem.preco_parcelado && (
-                  <p className="text-white/60 text-sm mt-1">
+                  <p className="text-white/50 text-sm mt-2">
                     {viagem.preco_parcelado}
                   </p>
                 )}
               </div>
 
               {/* Detalhes */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Calendar size={20} className="text-cyan-400" />
+              <div className="space-y-5 mb-8">
+                <div className="flex items-center gap-4">
+                  <Calendar size={22} className="text-cyan-400" />
                   <div>
-                    <p className="text-white/50 text-xs">Data</p>
+                    <p className="text-white/50 text-sm">Data</p>
                     <p className="text-white font-medium">{formatDate(viagem.data_viagem)}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <Clock size={20} className="text-cyan-400" />
+                <div className="flex items-center gap-4">
+                  <Clock size={22} className="text-cyan-400" />
                   <div>
-                    <p className="text-white/50 text-xs">Duração</p>
+                    <p className="text-white/50 text-sm">Duração</p>
                     <p className="text-white font-medium">{viagem.duracao}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <Mountain size={20} className="text-cyan-400" />
+                <div className="flex items-center gap-4">
+                  <Mountain size={22} className="text-cyan-400" />
                   <div>
-                    <p className="text-white/50 text-xs">Dificuldade</p>
+                    <p className="text-white/50 text-sm">Dificuldade</p>
                     <p className="text-white font-medium">{viagem.dificuldade}</p>
                   </div>
                 </div>
 
                 {viagem.local_saida && (
-                  <div className="flex items-center gap-3">
-                    <MapPin size={20} className="text-pink-400" />
+                  <div className="flex items-center gap-4">
+                    <MapPin size={22} className="text-cyan-400" />
                     <div>
-                      <p className="text-white/50 text-xs">Saída</p>
+                      <p className="text-white/50 text-sm">Saída</p>
                       <p className="text-white font-medium">{viagem.local_saida}</p>
                     </div>
                   </div>
                 )}
 
-                <div className="flex items-center gap-3">
-                  <MapPin size={20} className="text-pink-400" />
+                <div className="flex items-center gap-4">
+                  <MapPin size={22} className="text-pink-400" />
                   <div>
-                    <p className="text-white/50 text-xs">Destino</p>
+                    <p className="text-white/50 text-sm">Destino</p>
                     <p className="text-white font-medium">{viagem.destino} - {viagem.estado}</p>
                   </div>
                 </div>
-
-                {/* Vagas */}
-                <div className="pt-4 border-t border-white/10">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-white/60 text-sm">Vagas disponíveis</span>
-                    <span className="text-white font-semibold">
-                      {viagem.vagas_disponiveis} de {viagem.vagas_total}
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-cyan-500 to-pink-500 rounded-full transition-all duration-500"
-                      style={{ width: `${vagasPercentage}%` }}
-                    />
-                  </div>
-                  {viagem.vagas_disponiveis <= 5 && viagem.vagas_disponiveis > 0 && (
-                    <p className="text-pink-400 text-sm mt-2 font-medium">
-                      Últimas vagas!
-                    </p>
-                  )}
-                  {viagem.vagas_disponiveis === 0 && (
-                    <p className="text-red-400 text-sm mt-2 font-medium">
-                      Esgotado
-                    </p>
-                  )}
-                </div>
               </div>
+
+              {/* Vagas */}
+              <div style={{ marginBottom: '4rem' }}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-white/50 text-sm">Vagas disponíveis</span>
+                  <span className="text-white font-medium">
+                    {viagem.vagas_disponiveis} de {viagem.vagas_total}
+                  </span>
+                </div>
+                <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-cyan-500 to-pink-500 rounded-full transition-all duration-500"
+                    style={{ width: `${vagasPercentage}%` }}
+                  />
+                </div>
+                {viagem.vagas_disponiveis <= 5 && viagem.vagas_disponiveis > 0 && (
+                  <p className="text-pink-400 text-sm mt-2 font-medium">
+                    Últimas vagas!
+                  </p>
+                )}
+                {viagem.vagas_disponiveis === 0 && (
+                  <p className="text-red-400 text-sm mt-2 font-medium">
+                    Esgotado
+                  </p>
+                )}
+              </div>
+
+              {/* Botão WhatsApp no card - SUPER CHAMATIVO */}
+              <style>{`
+                @keyframes breathe {
+                  0%, 100% {
+                    transform: scale(1);
+                    box-shadow: 0 0 40px rgba(6, 182, 212, 0.6), 0 0 80px rgba(236, 72, 153, 0.4);
+                  }
+                  50% {
+                    transform: scale(1.03);
+                    box-shadow: 0 0 50px rgba(6, 182, 212, 0.7), 0 0 90px rgba(236, 72, 153, 0.5);
+                  }
+                }
+                .btn-breathe {
+                  animation: breathe 2s ease-in-out infinite;
+                }
+                .btn-breathe:hover {
+                  animation: none !important;
+                }
+              `}</style>
+              <a
+                href={getWhatsAppLink(whatsappNumber, whatsappMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full btn-gradient btn-breathe rounded-2xl text-white font-bold text-xl flex items-center justify-center gap-4 transition-all"
+                style={{
+                  padding: '1.75rem 2rem'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)'
+                  e.currentTarget.style.boxShadow = '0 0 60px rgba(6, 182, 212, 0.8), 0 0 100px rgba(236, 72, 153, 0.6)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = ''
+                  e.currentTarget.style.boxShadow = ''
+                }}
+              >
+                <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center" style={{ flexShrink: 0 }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </div>
+                Reservar pelo WhatsApp
+              </a>
             </div>
           </div>
         </div>
@@ -275,36 +311,7 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
           </div>
         )}
 
-        {/* Navegação entre viagens */}
-        {viagens.length > 1 && (
-          <div className="flex items-center justify-center gap-4 mt-12">
-            <button
-              onClick={handlePrevViagem}
-              className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/50 transition-colors"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <div className="flex gap-2">
-              {viagens.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => onIndexChange(index)}
-                  className={`h-3 rounded-full transition-all ${
-                    index === activeIndex
-                      ? 'bg-gradient-to-r from-cyan-500 to-pink-500 w-10'
-                      : 'bg-white/30 w-3 hover:bg-white/50'
-                  }`}
-                />
-              ))}
-            </div>
-            <button
-              onClick={handleNextViagem}
-              className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/50 transition-colors"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
-        )}
+        {/* Navegação removida conforme solicitado */}
       </div>
 
       {/* Gallery Lightbox */}

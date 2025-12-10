@@ -1,10 +1,36 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, ChevronLeft, ChevronRight, Expand } from 'lucide-react'
 import { SectionLoader } from '../common/LoadingSpinner'
 
 const GaleriaMomentos = ({ fotos, loading }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [displayedFotos, setDisplayedFotos] = useState([])
+
+  // Função para pegar 6 fotos aleatórias
+  const getRandomPhotos = (photos, count = 6) => {
+    if (!photos || photos.length === 0) return []
+    const shuffled = [...photos].sort(() => Math.random() - 0.5)
+    return shuffled.slice(0, Math.min(count, photos.length))
+  }
+
+  // Inicializar com fotos aleatórias
+  useEffect(() => {
+    if (fotos && fotos.length > 0) {
+      setDisplayedFotos(getRandomPhotos(fotos))
+    }
+  }, [fotos])
+
+  // Trocar fotos a cada 8 segundos
+  useEffect(() => {
+    if (!fotos || fotos.length === 0) return
+
+    const interval = setInterval(() => {
+      setDisplayedFotos(getRandomPhotos(fotos))
+    }, 8000) // 8 segundos
+
+    return () => clearInterval(interval)
+  }, [fotos])
 
   const openLightbox = (index) => {
     setCurrentIndex(index)
@@ -18,11 +44,11 @@ const GaleriaMomentos = ({ fotos, loading }) => {
   }
 
   const goToPrevious = () => {
-    setCurrentIndex(currentIndex === 0 ? fotos.length - 1 : currentIndex - 1)
+    setCurrentIndex(currentIndex === 0 ? displayedFotos.length - 1 : currentIndex - 1)
   }
 
   const goToNext = () => {
-    setCurrentIndex(currentIndex === fotos.length - 1 ? 0 : currentIndex + 1)
+    setCurrentIndex(currentIndex === displayedFotos.length - 1 ? 0 : currentIndex + 1)
   }
 
   // Handle keyboard navigation
@@ -43,47 +69,42 @@ const GaleriaMomentos = ({ fotos, loading }) => {
   return (
     <section id="galeria" className="section-spacing bg-gradient-to-b from-blue-900 to-blue-950">
       <div className="container-centered">
-        {/* Header centralizado */}
-        <div className="text-center mb-12">
-          <p className="text-cyan-400 font-semibold mb-4">Galeria</p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+        {/* Header - TUDO BEM CENTRALIZADO */}
+        <div style={{ width: '100%', maxWidth: '80rem', margin: '0 auto', textAlign: 'center', marginBottom: '4rem' }}>
+          <p className="text-cyan-400 font-semibold mb-6 text-lg">Galeria</p>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Momentos <span className="gradient-text">Inesquecíveis</span>
           </h2>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto">
+          <p className="text-white/60 text-lg md:text-xl leading-relaxed" style={{ maxWidth: '40rem', margin: '0 auto', textAlign: 'center', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}>
             Confira algumas fotos das nossas aventuras e dos nossos aventureiros
           </p>
         </div>
 
-        {/* Grid de fotos - centralizado */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {fotos.map((foto, index) => {
-            const isLarge = index === 0 || index === 3
-            return (
-              <div
-                key={foto.id}
-                onClick={() => openLightbox(index)}
-                className={`relative rounded-xl overflow-hidden cursor-pointer group ${
-                  isLarge ? 'col-span-2 row-span-2' : ''
-                }`}
-                style={{ aspectRatio: '1' }}
-              >
-                <img
-                  src={foto.imagem_url}
-                  alt={foto.legenda || 'Momento Trilhos e Trilhas'}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                  <Expand size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                {foto.legenda && (
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-white text-sm">{foto.legenda}</p>
-                  </div>
-                )}
+        {/* Grid de fotos - centralizado - 6 fotos fixas */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {displayedFotos.map((foto, index) => (
+            <div
+              key={`${foto.id}-${index}`}
+              onClick={() => openLightbox(index)}
+              className="relative rounded-xl overflow-hidden cursor-pointer group"
+              style={{ aspectRatio: '1' }}
+            >
+              <img
+                src={foto.imagem_url}
+                alt={foto.legenda || 'Momento Trilhos e Trilhas'}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                <Expand size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-            )
-          })}
+              {foto.legenda && (
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="text-white text-sm">{foto.legenda}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -110,13 +131,13 @@ const GaleriaMomentos = ({ fotos, loading }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={fotos[currentIndex].imagem_url}
-              alt={fotos[currentIndex].legenda || `Foto ${currentIndex + 1}`}
+              src={displayedFotos[currentIndex].imagem_url}
+              alt={displayedFotos[currentIndex].legenda || `Foto ${currentIndex + 1}`}
               className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
             />
 
             {/* Navigation */}
-            {fotos.length > 1 && (
+            {displayedFotos.length > 1 && (
               <>
                 <button
                   onClick={goToPrevious}
@@ -137,11 +158,11 @@ const GaleriaMomentos = ({ fotos, loading }) => {
 
             {/* Caption & Counter */}
             <div className="text-center mt-4">
-              {fotos[currentIndex].legenda && (
-                <p className="text-white mb-2">{fotos[currentIndex].legenda}</p>
+              {displayedFotos[currentIndex].legenda && (
+                <p className="text-white mb-2">{displayedFotos[currentIndex].legenda}</p>
               )}
               <p className="text-white/60 text-sm">
-                {currentIndex + 1} / {fotos.length}
+                {currentIndex + 1} / {displayedFotos.length}
               </p>
             </div>
           </div>

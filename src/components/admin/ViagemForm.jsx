@@ -154,20 +154,20 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
   const dificuldades = ['Fácil', 'Moderada', 'Difícil', 'Extrema']
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-14">
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
       {/* Informações Básicas */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-10 shadow-2xl shadow-cyan-500/5">
-        <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-4">
+      <div className="bg-white/5 border border-white/10 rounded-3xl shadow-2xl shadow-cyan-500/5" style={{ padding: '2.5rem' }}>
+        <h3 className="text-2xl font-bold text-white flex items-center" style={{ gap: '1rem', marginBottom: '2rem' }}>
           <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 flex items-center justify-center shadow-lg">
             <Info size={24} className="text-cyan-400" />
           </div>
           Informações Básicas
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '2rem' }}>
           {/* Título */}
           <div className="md:col-span-2">
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Título da Viagem <span className="text-pink-400">*</span>
             </label>
             <input
@@ -176,14 +176,15 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               value={formData.titulo}
               onChange={handleChange}
               placeholder="Ex: Pico da Bandeira"
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             />
           </div>
 
           {/* Slug */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Slug (URL)
             </label>
             <input
@@ -192,20 +193,22 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               value={formData.slug}
               onChange={handleChange}
               placeholder="pico-da-bandeira"
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
             />
           </div>
 
           {/* Estado */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Estado <span className="text-pink-400">*</span>
             </label>
             <select
               name="estado"
               value={formData.estado}
               onChange={handleChange}
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors appearance-none cursor-pointer shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors appearance-none cursor-pointer shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             >
               {estados.map(estado => (
@@ -216,7 +219,7 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
 
           {/* Descrição Curta */}
           <div className="md:col-span-2">
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Descrição Curta
             </label>
             <input
@@ -226,13 +229,14 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               onChange={handleChange}
               maxLength={500}
               placeholder="Breve descrição para o carrossel"
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
             />
           </div>
 
           {/* Descrição Completa */}
           <div className="md:col-span-2">
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Descrição Completa <span className="text-pink-400">*</span>
             </label>
             <textarea
@@ -241,14 +245,15 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               onChange={handleChange}
               rows={6}
               placeholder="Descrição detalhada da viagem..."
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors resize-none shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors resize-none shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             />
           </div>
 
           {/* Destino */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Destino <span className="text-pink-400">*</span>
             </label>
             <input
@@ -257,14 +262,15 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               value={formData.destino}
               onChange={handleChange}
               placeholder="Ex: Parque Nacional do Caparaó"
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             />
           </div>
 
           {/* Local de Saída */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Local de Saída
             </label>
             <input
@@ -273,25 +279,26 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               value={formData.local_saida}
               onChange={handleChange}
               placeholder="Ex: Shopping Vitória"
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
             />
           </div>
         </div>
       </div>
 
       {/* Detalhes */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-10 shadow-2xl shadow-green-500/5">
-        <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-4">
+      <div className="bg-white/5 border border-white/10 rounded-3xl shadow-2xl shadow-green-500/5" style={{ padding: '2.5rem' }}>
+        <h3 className="text-2xl font-bold text-white flex items-center" style={{ gap: '1rem', marginBottom: '2rem' }}>
           <div className="w-12 h-12 rounded-2xl bg-green-500/20 flex items-center justify-center shadow-lg">
             <Settings size={24} className="text-green-400" />
           </div>
           Detalhes da Viagem
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: '2rem' }}>
           {/* Data */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Data <span className="text-pink-400">*</span>
             </label>
             <input
@@ -299,14 +306,15 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               name="data_viagem"
               value={formData.data_viagem}
               onChange={handleChange}
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             />
           </div>
 
           {/* Duração */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Duração <span className="text-pink-400">*</span>
             </label>
             <input
@@ -315,21 +323,23 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               value={formData.duracao}
               onChange={handleChange}
               placeholder="Ex: 2 dias e 1 noite"
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             />
           </div>
 
           {/* Dificuldade */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Dificuldade <span className="text-pink-400">*</span>
             </label>
             <select
               name="dificuldade"
               value={formData.dificuldade}
               onChange={handleChange}
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors appearance-none cursor-pointer shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors appearance-none cursor-pointer shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             >
               {dificuldades.map(dif => (
@@ -340,7 +350,7 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
 
           {/* Vagas Totais */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Vagas Totais <span className="text-pink-400">*</span>
             </label>
             <input
@@ -349,14 +359,15 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               value={formData.vagas_total}
               onChange={handleChange}
               min={1}
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             />
           </div>
 
           {/* Vagas Disponíveis */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Vagas Disponíveis <span className="text-pink-400">*</span>
             </label>
             <input
@@ -366,7 +377,8 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               onChange={handleChange}
               min={0}
               max={formData.vagas_total}
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             />
           </div>
@@ -374,18 +386,18 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
       </div>
 
       {/* Preço */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-10 shadow-2xl shadow-yellow-500/5">
-        <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-4">
+      <div className="bg-white/5 border border-white/10 rounded-3xl shadow-2xl shadow-yellow-500/5" style={{ padding: '2.5rem' }}>
+        <h3 className="text-2xl font-bold text-white flex items-center" style={{ gap: '1rem', marginBottom: '2rem' }}>
           <div className="w-12 h-12 rounded-2xl bg-yellow-500/20 flex items-center justify-center shadow-lg">
             <DollarSign size={24} className="text-yellow-400" />
           </div>
           Preço
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '2rem' }}>
           {/* Valor */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Valor (R$) <span className="text-pink-400">*</span>
             </label>
             <input
@@ -396,14 +408,15 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               step="0.01"
               min={0}
               placeholder="650.00"
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
               required
             />
           </div>
 
           {/* Texto Parcelado */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Texto Parcelado
             </label>
             <input
@@ -412,28 +425,29 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
               value={formData.preco_parcelado}
               onChange={handleChange}
               placeholder="ou 12x de R$ 54,17"
-              className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+              style={{ padding: '1.25rem 1.5rem' }}
             />
           </div>
         </div>
       </div>
 
       {/* Imagens */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-10 shadow-2xl shadow-pink-500/5">
-        <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-4">
+      <div className="bg-white/5 border border-white/10 rounded-3xl shadow-2xl shadow-pink-500/5" style={{ padding: '2.5rem' }}>
+        <h3 className="text-2xl font-bold text-white flex items-center" style={{ gap: '1rem', marginBottom: '2rem' }}>
           <div className="w-12 h-12 rounded-2xl bg-pink-500/20 flex items-center justify-center shadow-lg">
             <ImageIcon size={24} className="text-pink-400" />
           </div>
           Imagens da Viagem
         </h3>
 
-        <div className="space-y-12">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
           {/* Imagem Principal */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-3">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Imagem Principal <span className="text-pink-400">*</span>
             </label>
-            <p className="text-white/50 text-base mb-5">
+            <p className="text-white/50 text-base" style={{ marginBottom: '1.5rem' }}>
               Esta imagem aparecerá no carrossel principal do site
             </p>
             <ImageUpload
@@ -448,10 +462,10 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
 
           {/* Galeria */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-3">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1rem' }}>
               Galeria de Fotos
             </label>
-            <p className="text-white/50 text-base mb-5">
+            <p className="text-white/50 text-base" style={{ marginBottom: '1.5rem' }}>
               Adicione fotos extras desta aventura (aparecerão na seção "Fotos desta aventura")
             </p>
             <MultipleImageUpload
@@ -465,32 +479,34 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
       </div>
 
       {/* Listas */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-10 shadow-2xl shadow-purple-500/5">
-        <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-4">
+      <div className="bg-white/5 border border-white/10 rounded-3xl shadow-2xl shadow-purple-500/5" style={{ padding: '2.5rem' }}>
+        <h3 className="text-2xl font-bold text-white flex items-center" style={{ gap: '1rem', marginBottom: '2rem' }}>
           <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center shadow-lg">
             <List size={24} className="text-purple-400" />
           </div>
           Listas de Informações
         </h3>
 
-        <div className="space-y-12">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
           {/* Inclusos */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-5">O que está incluso</label>
-            <div className="space-y-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1.5rem' }}>O que está incluso</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {formData.inclusos.map((item, index) => (
                 <div key={index} className="flex gap-4">
                   <input
                     type="text"
                     value={item}
                     onChange={(e) => handleListChange('inclusos', index, e.target.value)}
-                    className="flex-1 px-6 py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+                    className="flex-1 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+                    style={{ padding: '1.25rem 1.5rem' }}
                     placeholder="Ex: Transporte ida e volta"
                   />
                   <button
                     type="button"
                     onClick={() => removeListItem('inclusos', index)}
-                    className="p-4 rounded-2xl text-red-400 hover:bg-red-500/10 border border-red-500/20 transition-colors shadow-lg"
+                    className="rounded-2xl text-red-400 hover:bg-red-500/10 border border-red-500/20 transition-colors shadow-lg"
+                    style={{ padding: '1.25rem 1.5rem' }}
                   >
                     <Trash2 size={22} />
                   </button>
@@ -500,7 +516,8 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
             <button
               type="button"
               onClick={() => addListItem('inclusos')}
-              className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 mt-5 font-semibold text-lg"
+              className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 font-semibold text-lg"
+              style={{ marginTop: '1.5rem' }}
             >
               <Plus size={22} />
               Adicionar item
@@ -509,21 +526,23 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
 
           {/* Não Inclusos */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-5">O que não está incluso</label>
-            <div className="space-y-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1.5rem' }}>O que não está incluso</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {formData.nao_inclusos.map((item, index) => (
                 <div key={index} className="flex gap-4">
                   <input
                     type="text"
                     value={item}
                     onChange={(e) => handleListChange('nao_inclusos', index, e.target.value)}
-                    className="flex-1 px-6 py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+                    className="flex-1 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+                    style={{ padding: '1.25rem 1.5rem' }}
                     placeholder="Ex: Alimentação"
                   />
                   <button
                     type="button"
                     onClick={() => removeListItem('nao_inclusos', index)}
-                    className="p-4 rounded-2xl text-red-400 hover:bg-red-500/10 border border-red-500/20 transition-colors shadow-lg"
+                    className="rounded-2xl text-red-400 hover:bg-red-500/10 border border-red-500/20 transition-colors shadow-lg"
+                    style={{ padding: '1.25rem 1.5rem' }}
                   >
                     <Trash2 size={22} />
                   </button>
@@ -533,7 +552,8 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
             <button
               type="button"
               onClick={() => addListItem('nao_inclusos')}
-              className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 mt-5 font-semibold text-lg"
+              className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 font-semibold text-lg"
+              style={{ marginTop: '1.5rem' }}
             >
               <Plus size={22} />
               Adicionar item
@@ -542,21 +562,23 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
 
           {/* O que levar */}
           <div>
-            <label className="block text-white text-lg font-semibold mb-5">O que levar</label>
-            <div className="space-y-4">
+            <label className="block text-white text-lg font-semibold" style={{ marginBottom: '1.5rem' }}>O que levar</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {formData.o_que_levar.map((item, index) => (
                 <div key={index} className="flex gap-4">
                   <input
                     type="text"
                     value={item}
                     onChange={(e) => handleListChange('o_que_levar', index, e.target.value)}
-                    className="flex-1 px-6 py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+                    className="flex-1 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/40 focus:border-cyan-500/50 focus:outline-none transition-colors shadow-lg"
+                    style={{ padding: '1.25rem 1.5rem' }}
                     placeholder="Ex: Mochila de ataque"
                   />
                   <button
                     type="button"
                     onClick={() => removeListItem('o_que_levar', index)}
-                    className="p-4 rounded-2xl text-red-400 hover:bg-red-500/10 border border-red-500/20 transition-colors shadow-lg"
+                    className="rounded-2xl text-red-400 hover:bg-red-500/10 border border-red-500/20 transition-colors shadow-lg"
+                    style={{ padding: '1.25rem 1.5rem' }}
                   >
                     <Trash2 size={22} />
                   </button>
@@ -566,7 +588,8 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
             <button
               type="button"
               onClick={() => addListItem('o_que_levar')}
-              className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 mt-5 font-semibold text-lg"
+              className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 font-semibold text-lg"
+              style={{ marginTop: '1.5rem' }}
             >
               <Plus size={22} />
               Adicionar item
@@ -576,9 +599,9 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
       </div>
 
       {/* Opções */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl p-10 shadow-2xl shadow-blue-500/5">
-        <h3 className="text-2xl font-bold text-white mb-8">Opções</h3>
-        <div className="flex flex-wrap gap-10">
+      <div className="bg-white/5 border border-white/10 rounded-3xl shadow-2xl shadow-blue-500/5" style={{ padding: '2.5rem' }}>
+        <h3 className="text-2xl font-bold text-white" style={{ marginBottom: '2rem' }}>Opções</h3>
+        <div className="flex flex-wrap" style={{ gap: '2.5rem' }}>
           <label className="flex items-center gap-5 cursor-pointer group">
             <div className="relative">
               <input
@@ -611,11 +634,12 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
       </div>
 
       {/* Actions */}
-      <div className="flex flex-wrap gap-5 justify-center lg:justify-end pt-6">
+      <div className="flex flex-wrap justify-center lg:justify-end" style={{ gap: '1.5rem', paddingTop: '2rem' }}>
         <button
           type="button"
           onClick={() => navigate('/admin/viagens')}
-          className="px-10 py-5 rounded-2xl border-2 border-white/20 text-white font-semibold text-lg hover:bg-white/5 transition-colors flex items-center gap-4 shadow-lg"
+          className="rounded-2xl border-2 border-white/20 text-white font-semibold text-lg hover:bg-white/5 transition-colors flex items-center shadow-lg"
+          style={{ gap: '1rem', padding: '1.5rem 2.5rem' }}
         >
           <X size={24} />
           Cancelar
@@ -623,7 +647,8 @@ const ViagemForm = ({ viagem, onSubmit, loading: submitting }) => {
         <button
           type="submit"
           disabled={submitting || uploading}
-          className="btn-gradient px-10 py-5 rounded-2xl text-white font-semibold text-lg flex items-center gap-4 disabled:opacity-50 shadow-lg shadow-cyan-500/20"
+          className="btn-gradient rounded-2xl text-white font-semibold text-lg flex items-center disabled:opacity-50 shadow-lg shadow-cyan-500/20"
+          style={{ gap: '1rem', padding: '1.5rem 2.5rem' }}
         >
           {submitting || uploading ? (
             <>
