@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, Edit, Trash2, ChevronUp, ChevronDown, MapPin, Search } from 'lucide-react'
+import { Plus, Edit, Trash2, ChevronUp, ChevronDown, MapPin, Search, Star } from 'lucide-react'
 import AdminLayout from '../../components/admin/AdminLayout'
 import { useViagensAdmin } from '../../hooks/useViagens'
 import { formatCurrency, formatDateShort } from '../../lib/utils'
@@ -8,7 +8,7 @@ import LoadingSpinner from '../../components/common/LoadingSpinner'
 import toast from 'react-hot-toast'
 
 const Viagens = () => {
-  const { viagens, loading, deleteViagem, toggleAtivo, reorderViagens } = useViagensAdmin()
+  const { viagens, loading, deleteViagem, toggleAtivo, toggleDestaque, reorderViagens } = useViagensAdmin()
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
   const [deleteConfirm, setDeleteConfirm] = useState(null)
@@ -38,6 +38,19 @@ const Viagens = () => {
       toast.success(currentStatus ? 'Viagem desativada' : 'Viagem ativada')
     } catch (error) {
       toast.error('Erro ao atualizar status')
+    }
+  }
+
+  const handleToggleDestaque = async (id, currentStatus) => {
+    try {
+      if (toggleDestaque) {
+        await toggleDestaque(id, !currentStatus)
+        toast.success(currentStatus ? 'Removido dos destaques' : 'Adicionado aos destaques')
+      } else {
+        toast.error('Função não implementada no hook')
+      }
+    } catch (error) {
+      toast.error('Erro ao atualizar destaque')
     }
   }
 
@@ -146,6 +159,7 @@ const Viagens = () => {
                     <th className="text-left text-white/60 font-semibold text-base hidden md:table-cell" style={{ padding: '1.5rem 1.5rem' }}>Data</th>
                     <th className="text-left text-white/60 font-semibold text-base hidden lg:table-cell" style={{ padding: '1.5rem 1.5rem' }}>Preço</th>
                     <th className="text-left text-white/60 font-semibold text-base hidden sm:table-cell" style={{ padding: '1.5rem 1.5rem' }}>Vagas</th>
+                    <th className="text-left text-white/60 font-semibold text-base" style={{ padding: '1.5rem 1.5rem' }}>Destaque</th>
                     <th className="text-left text-white/60 font-semibold text-base" style={{ padding: '1.5rem 1.5rem' }}>Status</th>
                     <th className="text-right text-white/60 font-semibold text-base" style={{ padding: '1.5rem 1.5rem' }}>Ações</th>
                   </tr>
@@ -161,6 +175,7 @@ const Viagens = () => {
                                 src={viagem.imagem_principal}
                                 alt={viagem.titulo}
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center">
@@ -182,6 +197,17 @@ const Viagens = () => {
                       </td>
                       <td className="text-white/60 text-base hidden sm:table-cell" style={{ padding: '1.5rem 1.5rem' }}>
                         <span className="font-semibold">{viagem.vagas_disponiveis}</span>/{viagem.vagas_total}
+                      </td>
+                      <td style={{ padding: '1.5rem 1.5rem' }}>
+                        <button
+                          onClick={() => handleToggleDestaque(viagem.id, viagem.destaque)}
+                          className={`p-2 rounded-xl transition-all ${
+                            viagem.destaque ? 'bg-yellow-500/20 text-yellow-400' : 'bg-white/5 text-white/20 hover:text-yellow-400 hover:bg-yellow-500/10'
+                          }`}
+                          title={viagem.destaque ? 'Remover destaque' : 'Destacar'}
+                        >
+                          <Star size={20} className={viagem.destaque ? 'fill-current' : ''} />
+                        </button>
                       </td>
                       <td style={{ padding: '1.5rem 1.5rem' }}>
                         <button

@@ -1,195 +1,158 @@
-import { useEffect, useRef, useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, EffectFade } from 'swiper/modules'
-import { ChevronLeft, ChevronRight, ChevronDown, MapPin } from 'lucide-react'
-import { getDifficultyColor } from '../../lib/utils'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { supabase } from '../../lib/supabase'
 
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/effect-fade'
+const HeroCarousel = () => {
+  const [slides, setSlides] = useState([])
+  const [current, setCurrent] = useState(0)
+  const [loading, setLoading] = useState(true)
 
-const HeroCarousel = ({ viagens, onSlideChange, activeIndex }) => {
-  const swiperRef = useRef(null)
-  const intervalRef = useRef(null)
-  const [autoplayActive, setAutoplayActive] = useState(true)
-
-  const scrollToDetails = () => {
-    const detailsSection = document.getElementById('viagem-details')
-    if (detailsSection) {
-      detailsSection.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
-  // Para o autoplay permanentemente quando usuário interage
-  const stopAutoplay = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-    setAutoplayActive(false)
-  }
-
-  const handleSlideChange = (swiper) => {
-    if (onSlideChange) {
-      onSlideChange(swiper.realIndex)
-    }
-  }
-
-  // Autoplay manual com setInterval
   useEffect(() => {
-    if (!viagens || viagens.length <= 1 || !autoplayActive) return
+    fetchDestaques()
+  }, [])
 
-    intervalRef.current = setInterval(() => {
-      if (swiperRef.current?.swiper) {
-        swiperRef.current.swiper.slideNext()
-      }
-    }, 3000) // 3 segundos
+  const fetchDestaques = async () => {
+    try {
+      // 1. Tenta buscar viagens marcadas como DESTAQUE e ATIVAS
+      let { data, error } = await supabase
+        .from('viagens')
+        .select('*')
+        .eq('destaque', true)
+        .eq('ativo', true)
+        .limit(5)
 
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
-    }
-  }, [viagens, autoplayActive])
-
-  // Sync quando o índice muda externamente (pelos botões na seção de detalhes)
-  useEffect(() => {
-    if (swiperRef.current?.swiper) {
-      const swiper = swiperRef.current.swiper
-      if (swiper.realIndex !== activeIndex) {
-        stopAutoplay() // Para o autoplay quando muda pela seção de detalhes
-        swiper.slideToLoop(activeIndex, 800)
-      }
-    }
-  }, [activeIndex])
-
-  // Para o autoplay quando scrollar para fora da seção do carousel
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!autoplayActive) return
-
-      const heroSection = document.getElementById('viagens')
-      if (heroSection) {
-        const rect = heroSection.getBoundingClientRect()
-        // Se a seção do hero saiu da tela (scrollou pra baixo)
-        if (rect.bottom < window.innerHeight * 0.5) {
-          stopAutoplay()
+      // 2. Se não encontrar destaques, busca QUAISQUER viagens ativas (fallback)
+      if (!data || data.length === 0) {
+        const { data: activeTrips } = await supabase
+          .from('viagens')
+          .select('*')
+          .eq('ativo', true)
+          .limit(5)
+        
+        if (activeTrips && activeTrips.length > 0) {
+          data = activeTrips
         }
       }
+
+      if (data && data.length > 0) {
+        setSlides(data)
+      } else {
+        // Fallback slides if no featured trips
+        setSlides([
+          {
+            id: 'fallback-1',
+            titulo: 'Aventure-se pelo Brasil',
+            descricao_curta: 'Descubra lugares incríveis com a Trilhos & Trilhas',
+            imagem_principal: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000',
+            destino: 'Brasil',
+            slug: 'viagens'
+          }
+        ])
+      }
+    } catch (error) {
+      console.error('Error fetching slides:', error)
+    } finally {
+      setLoading(false)
     }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [autoplayActive])
-
-  if (!viagens || viagens.length === 0) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-gradient-to-b from-blue-900 to-blue-950">
-        <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-4">
-            Trilhos & Trilhas
-          </h1>
-          <p className="text-xl text-white/60">
-            Sua próxima aventura está sendo preparada...
-          </p>
-        </div>
-      </div>
-    )
   }
 
+  const nextSlide = () => {
+    setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+  }
+
+  const prevSlide = () => {
+    setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
+  }
+
+  useEffect(() => {
+    if (slides.length <= 1) return
+    const timer = setInterval(nextSlide, 5000)
+    return () => clearInterval(timer)
+  }, [slides.length])
+
+  if (loading) return <div className="h-screen bg-blue-950 animate-pulse" />
+
   return (
-    <section id="viagens" className="relative h-screen pt-20">
-      <Swiper
-        ref={swiperRef}
-        modules={[Navigation, Pagination, EffectFade]}
-        effect="fade"
-        speed={800}
-        navigation={{
-          prevEl: '.hero-prev',
-          nextEl: '.hero-next'
-        }}
-        pagination={{
-          clickable: true,
-          dynamicBullets: true
-        }}
-        loop={viagens.length > 1}
-        onSlideChange={handleSlideChange}
-        onTouchStart={stopAutoplay}
-        onNavigationNext={stopAutoplay}
-        onNavigationPrev={stopAutoplay}
-        className="h-full"
-      >
-        {viagens.map((viagem, index) => (
-          <SwiperSlide key={viagem.id || index}>
-            <div className="relative h-full">
-              {/* Background Image */}
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{
-                  backgroundImage: `url(${viagem.imagem_principal || 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920'})`
-                }}
-              >
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-950/50 to-blue-950/20" />
-              </div>
+    <div className="relative h-[600px] md:h-[700px] lg:h-screen w-full overflow-hidden bg-blue-950">
+      {slides.map((slide, index) => (
+        <div
+          key={slide.id}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === current ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {/* Image with Overlay */}
+          <div className="absolute inset-0 bg-black/40 z-10" />
+          <img
+            src={slide.imagem_principal}
+            alt={slide.titulo}
+            className="w-full h-full object-cover"
+            loading={index === 0 ? "eager" : "lazy"}
+            fetchPriority={index === 0 ? "high" : "auto"}
+          />
 
-              {/* Content - Centralizado */}
-              <div className="relative h-full flex flex-col items-center justify-center">
-                <div className="text-center animate-fadeInUp px-8 sm:px-16 lg:px-24">
-                  {/* Difficulty Badge */}
-                  <span
-                    className={`inline-block px-4 py-1.5 rounded-full text-xs font-semibold text-white mb-4 ${getDifficultyColor(viagem.dificuldade)}`}
-                  >
-                    {viagem.dificuldade}
-                  </span>
-
-                  {/* Title */}
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                    {viagem.titulo}
-                  </h1>
-
-                  {/* Location */}
-                  <div className="flex items-center justify-center gap-2 text-white/90 text-lg md:text-xl">
-                    <MapPin size={22} className="text-cyan-400" />
-                    <span>{viagem.destino}</span>
-                    <span className="text-pink-400">•</span>
-                    <span>{viagem.estado}</span>
-                  </div>
-                </div>
-              </div>
+          {/* Content */}
+          <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
+            <div className="max-w-4xl mx-auto mt-16 flex flex-col items-center text-center">
+              <span className="inline-block px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm md:text-base font-medium mb-4 animate-fade-in-up">
+                {slide.destino}
+              </span>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in-up delay-100 drop-shadow-2xl">
+                {slide.titulo}
+              </h1>
+              <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto animate-fade-in-up delay-200 line-clamp-2 md:line-clamp-none drop-shadow-md">
+                {slide.descricao_curta}
+              </p>
+              
+              {slide.id !== 'fallback-1' && (
+                <Link
+                  to={`/viagens/${slide.slug}`}
+                  className="btn-gradient px-8 py-4 rounded-full text-white font-bold text-lg inline-flex items-center gap-2 hover:scale-105 transition-transform animate-fade-in-up delay-300 shadow-lg shadow-cyan-500/20"
+                >
+                  Ver Detalhes
+                  <ChevronRight size={20} />
+                </Link>
+              )}
             </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+          </div>
+        </div>
+      ))}
 
-      {/* Custom Navigation Buttons */}
-      {viagens.length > 1 && (
+      {/* Navigation Buttons */}
+      {slides.length > 1 && (
         <>
           <button
-            className="hero-prev absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-cyan-500/50 transition-all"
-            aria-label="Anterior"
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all hidden md:block"
           >
-            <ChevronLeft size={28} />
+            <ChevronLeft size={24} />
           </button>
           <button
-            className="hero-next absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-cyan-500/50 transition-all"
-            aria-label="Próximo"
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all hidden md:block"
           >
-            <ChevronRight size={28} />
+            <ChevronRight size={24} />
           </button>
+
+          {/* Dots */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrent(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === current ? 'bg-white w-8' : 'bg-white/40 w-2 hover:bg-white/60'
+                }`}
+              />
+            ))}
+          </div>
         </>
       )}
 
-      {/* Scroll Indicator */}
-      <button
-        onClick={scrollToDetails}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center text-white/60 hover:text-white transition-colors"
-        aria-label="Ver detalhes"
-      >
-        <ChevronDown size={32} className="animate-bounce-slow" />
-      </button>
-    </section>
+      {/* Gradient Transition (Suavização para a próxima seção) */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-blue-950 to-transparent z-20 pointer-events-none" />
+    </div>
   )
 }
 

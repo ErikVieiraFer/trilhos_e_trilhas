@@ -1,11 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { MessageCircle, ArrowRight, Mail, CheckCircle } from 'lucide-react'
 import { getWhatsAppLink } from '../../lib/utils'
 
 const FooterCTA = ({ config }) => {
+  const sectionRef = useRef(null)
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [offsetY, setOffsetY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect()
+        // Move a imagem suavemente para cima enquanto o usuário rola para baixo
+        setOffsetY((rect.top - window.innerHeight) * 0.15)
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Cálculo inicial
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const whatsappNumber = config?.whatsapp || import.meta.env.VITE_WHATSAPP_NUMBER || '5527999999999'
   const backgroundImage = config?.footer_imagem || 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920'
@@ -25,11 +40,14 @@ const FooterCTA = ({ config }) => {
   }
 
   return (
-    <section id="contato" className="relative section-cta">
+    <section ref={sectionRef} id="contato" className="relative section-cta pt-32 pb-20 overflow-hidden">
       {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
+        className="absolute inset-0 w-full h-[130%] top-0 bg-cover bg-center pointer-events-none will-change-transform"
+        style={{ 
+          backgroundImage: `url(${backgroundImage})`,
+          transform: `translateY(${offsetY}px)`
+        }}
       >
         <div className="absolute inset-0 bg-blue-950/70" />
       </div>
@@ -113,7 +131,7 @@ const FooterCTA = ({ config }) => {
 
           {/* Newsletter - BEM CENTRALIZADO E MAIS ESPAÇO */}
           <div style={{ marginTop: '5rem', maxWidth: '36rem', margin: '5rem auto 0 auto' }}>
-          <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-[3rem] p-10 shadow-2xl">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Mail className="text-cyan-400" size={28} />
               <h3 className="text-2xl font-bold text-white text-center">
@@ -133,13 +151,13 @@ const FooterCTA = ({ config }) => {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="seu@email.com"
                     required
-                    className="w-full px-6 py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-white/40 focus:border-cyan-500/50 focus:bg-white/15 focus:outline-none transition-all text-center"
+                    className="w-full px-6 py-4 bg-white/5 border border-white/20 rounded-full text-white placeholder-white/40 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all text-center"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold hover:scale-105 transition-transform disabled:opacity-50 whitespace-nowrap"
+                  className="px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold hover:scale-105 transition-transform disabled:opacity-50 whitespace-nowrap shadow-lg shadow-pink-500/20"
                 >
                   {loading ? 'Enviando...' : 'Quero Saber Mais'}
                 </button>
@@ -159,15 +177,15 @@ const FooterCTA = ({ config }) => {
 
           {/* Trust indicators - BEM CENTRALIZADO */}
           <div className="mt-16 flex flex-wrap items-center justify-center gap-10 text-white/60 text-lg">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/5">
             <div className="w-3 h-3 rounded-full bg-green-500" />
             <span>Resposta rápida</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/5">
             <div className="w-3 h-3 rounded-full bg-cyan-500" />
             <span>Pagamento facilitado</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/5">
             <div className="w-3 h-3 rounded-full bg-pink-500" />
             <span>Grupos pequenos</span>
           </div>

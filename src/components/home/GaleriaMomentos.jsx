@@ -92,7 +92,7 @@ const GaleriaMomentos = ({ fotos, loading }) => {
               <img
                 src={foto.imagem_url}
                 alt={foto.legenda || 'Momento Trilhos e Trilhas'}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-700 animate-fade-in"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">

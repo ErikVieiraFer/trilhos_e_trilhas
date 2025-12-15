@@ -1,46 +1,48 @@
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
-const SEO = ({
-  title = 'Trilhos & Trilhas',
-  description = 'Turismo de aventura no Espírito Santo. Trilhas, praias, campings e expedições noturnas nos estados ES, RJ, MG e BA.',
-  image = '/og-image.jpg',
-  url = ''
-}) => {
-  const siteUrl = import.meta.env.VITE_SITE_URL || 'https://trilhosetrilhas.com.br'
-  const fullUrl = `${siteUrl}${url}`
-  const fullTitle = title === 'Trilhos & Trilhas' ? title : `${title} | Trilhos & Trilhas`
+const SEO = ({ title, description, image, type = 'website' }) => {
+  const location = useLocation()
+  const siteUrl = window.location.origin
+  const fullUrl = `${siteUrl}${location.pathname}`
 
   useEffect(() => {
-    document.title = fullTitle
+    // Title
+    const pageTitle = title ? `${title} | Trilhos & Trilhas` : 'Trilhos & Trilhas - Turismo de Aventura'
+    document.title = pageTitle
 
-    // Update meta tags
-    const updateMeta = (property, content) => {
-      let meta = document.querySelector(`meta[property="${property}"]`) ||
-                 document.querySelector(`meta[name="${property}"]`)
+    // Meta tags configuration
+    const metaTags = [
+      { selector: 'name="description"', name: 'description', content: description || 'Agência de turismo de aventura especializada em trilhas e expedições.' },
+      
+      // Open Graph
+      { selector: 'property="og:title"', property: 'og:title', content: pageTitle },
+      { selector: 'property="og:description"', property: 'og:description', content: description || 'Agência de turismo de aventura especializada em trilhas e expedições.' },
+      { selector: 'property="og:image"', property: 'og:image', content: image || `${siteUrl}/og-default.jpg` },
+      { selector: 'property="og:url"', property: 'og:url', content: fullUrl },
+      { selector: 'property="og:type"', property: 'og:type', content: type },
+      
+      // Twitter
+      { selector: 'name="twitter:card"', name: 'twitter:card', content: 'summary_large_image' },
+      { selector: 'name="twitter:title"', name: 'twitter:title', content: pageTitle },
+      { selector: 'name="twitter:description"', name: 'twitter:description', content: description || 'Agência de turismo de aventura especializada em trilhas e expedições.' },
+      { selector: 'name="twitter:image"', name: 'twitter:image', content: image || `${siteUrl}/og-default.jpg` },
+    ]
 
-      if (!meta) {
-        meta = document.createElement('meta')
-        if (property.startsWith('og:') || property.startsWith('twitter:')) {
-          meta.setAttribute('property', property)
-        } else {
-          meta.setAttribute('name', property)
-        }
-        document.head.appendChild(meta)
+    metaTags.forEach(tag => {
+      let element = document.querySelector(`meta[${tag.selector}]`)
+
+      if (!element) {
+        element = document.createElement('meta')
+        if (tag.name) element.setAttribute('name', tag.name)
+        if (tag.property) element.setAttribute('property', tag.property)
+        document.head.appendChild(element)
       }
-      meta.setAttribute('content', content)
-    }
 
-    updateMeta('description', description)
-    updateMeta('og:title', fullTitle)
-    updateMeta('og:description', description)
-    updateMeta('og:image', `${siteUrl}${image}`)
-    updateMeta('og:url', fullUrl)
-    updateMeta('og:type', 'website')
-    updateMeta('twitter:card', 'summary_large_image')
-    updateMeta('twitter:title', fullTitle)
-    updateMeta('twitter:description', description)
-    updateMeta('twitter:image', `${siteUrl}${image}`)
-  }, [fullTitle, description, image, fullUrl, siteUrl])
+      element.setAttribute('content', tag.content)
+    })
+
+  }, [title, description, image, fullUrl, type, siteUrl])
 
   return null
 }

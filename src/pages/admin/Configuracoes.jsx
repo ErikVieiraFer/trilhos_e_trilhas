@@ -1,64 +1,132 @@
 import { useState, useEffect } from 'react'
-import { Save, Loader, Phone, Mail, Instagram, Users, Mountain, MapPin, Image as ImageIcon, Info } from 'lucide-react'
+import { Save, Upload, Loader, Image as ImageIcon } from 'lucide-react'
 import AdminLayout from '../../components/admin/AdminLayout'
-import { useConfiguracoes } from '../../hooks/useConfiguracoes'
-import { useStorage } from '../../hooks/useStorage'
-import ImageUpload from '../../components/admin/ImageUpload'
-import LoadingSpinner from '../../components/common/LoadingSpinner'
+import { supabase } from '../../lib/supabase'
 import toast from 'react-hot-toast'
+import LoadingSpinner from '../../components/common/LoadingSpinner'
 
 const Configuracoes = () => {
-  const { config, loading, updateMultiple } = useConfiguracoes()
-  const { upload, uploading, progress } = useStorage('galeria')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  
   const [formData, setFormData] = useState({
     whatsapp: '',
     email: '',
     instagram: '',
-    sobre_texto: '',
+    sobre_nos: '',
     num_aventureiros: '',
     num_trilhas: '',
     num_estados: '',
-    footer_imagem: ''
+    imagem_footer: ''
   })
-  const [saving, setSaving] = useState(false)
-  const [footerImageFile, setFooterImageFile] = useState(null)
 
   useEffect(() => {
-    if (config) {
-      setFormData(config)
+    fetchConfig()
+  }, [])
+
+  const fetchConfig = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('configuracoes')
+        .select('*')
+        .single()
+
+      if (error && error.code !== 'PGRST116') throw error
+
+      if (data) {
+        setFormData(data)
+      }
+    } catch (error) {
+      console.error('Erro ao buscar configurações:', error)
+      toast.error('Erro ao carregar configurações')
+    } finally {
+      setLoading(false)
     }
-  }, [config])
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
-  const handleImageChange = (file) => {
-    setFooterImageFile(file)
-    if (file && typeof file !== 'string') {
-      setFormData(prev => ({ ...prev, footer_imagem: file }))
-    } else if (file === null) {
-      setFormData(prev => ({ ...prev, footer_imagem: '' }))
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('A imagem deve ter no máximo 5MB')
+      return
+    }
+
+    try {
+      setUploading(true)
+      const fileExt = file.name.split('.').pop()
+      const fileName = `footer-${Date.now()}.${fileExt}`
+      const filePath = `config/${fileName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('galeria')
+        .upload(filePath, file)
+
+      if (uploadError) throw uploadError
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('galeria')
+        .getPublicUrl(filePath)
+
+      setFormData(prev => ({
+        ...prev,
+        imagem_footer: publicUrl
+      }))
+      
+      toast.success('Imagem enviada com sucesso')
+    } catch (error) {
+      console.error('Erro no upload:', error)
+      toast.error('Erro ao fazer upload da imagem')
+    } finally {
+      setUploading(false)
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      toast.error('Email inválido')
+      return
+    }
+
+    setSaving(true)
+
     try {
-      setSaving(true)
-      let footerImageUrl = formData.footer_imagem
-      if (footerImageFile && typeof footerImageFile !== 'string') {
-        footerImageUrl = await upload(footerImageFile, 'footer')
+      const { data: existing } = await supabase
+        .from('configuracoes')
+        .select('id')
+        .single()
+
+      let error
+      if (existing) {
+        const { error: updateError } = await supabase
+          .from('configuracoes')
+          .update(formData)
+          .eq('id', existing.id)
+        error = updateError
+      } else {
+        const { error: insertError } = await supabase
+          .from('configuracoes')
+          .insert([formData])
+        error = insertError
       }
-      await updateMultiple({
-        ...formData,
-        footer_imagem: footerImageUrl
-      })
+
+      if (error) throw error
       toast.success('Configurações salvas com sucesso!')
     } catch (error) {
+      console.error('Erro ao salvar:', error)
       toast.error('Erro ao salvar configurações')
-      console.error(error)
     } finally {
       setSaving(false)
     }
@@ -76,214 +144,171 @@ const Configuracoes = () => {
 
   return (
     <AdminLayout>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-        {/* Header - CENTRALIZADO */}
-        <div className="text-center" style={{ paddingTop: '1.5rem' }}>
-          <h1 className="text-4xl font-bold text-white mb-3">Configurações</h1>
-          <p className="text-white/60 text-lg">Configure as informações gerais do site</p>
+      <div className="max-w-4xl mx-auto pb-20">
+        <div className="flex items-center justify-between mb-8 pt-6">
+          <div>
+            <h1 className="text-3xl font-bold text-white">Configurações Gerais</h1>
+            <p className="text-white/60">Gerencie as informações principais do site</p>
+          </div>
+          <button
+            onClick={handleSubmit}
+            disabled={saving || uploading}
+            className="btn-gradient px-8 py-3 rounded-xl text-white font-bold flex items-center gap-2 disabled:opacity-50"
+          >
+            {saving ? <Loader size={20} className="animate-spin" /> : <Save size={20} />}
+            Salvar Alterações
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-
-          {/* Card Contato */}
-          <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
-            <div className="flex items-center gap-4" style={{ marginBottom: '2.5rem' }}>
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                <Phone size={28} className="text-white" />
-              </div>
+        <div className="flex flex-col gap-8">
+          {/* Contato */}
+          <div className="glass rounded-3xl p-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-sm">1</span>
+              Informações de Contato
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <h2 className="text-2xl font-bold text-white">Informações de Contato</h2>
-                <p className="text-white/50">Dados para os clientes entrarem em contato</p>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-              {/* WhatsApp */}
-              <div>
-                <label className="block text-white text-lg font-medium mb-3">
-                  WhatsApp <span className="text-pink-400">*</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none">
-                    <Phone size={22} />
-                  </div>
-                  <input
-                    type="text"
-                    name="whatsapp"
-                    value={formData.whatsapp}
-                    onChange={handleChange}
-                    placeholder="5527999999999"
-                    className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
-                    style={{ paddingLeft: '3.5rem', paddingRight: '1.5rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
-                  />
-                </div>
-                <p className="text-white/40 text-sm mt-2 ml-2">Formato: código do país + DDD + número (apenas números)</p>
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-white text-lg font-medium mb-3">Email</label>
-                <div className="relative">
-                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none">
-                    <Mail size={22} />
-                  </div>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="contato@trilhosetrilhas.com.br"
-                    className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10 focus:outline-none transition-all"
-                    style={{ paddingLeft: '3.5rem', paddingRight: '1.5rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
-                  />
-                </div>
-              </div>
-
-              {/* Instagram */}
-              <div>
-                <label className="block text-white text-lg font-medium mb-3">Instagram</label>
-                <div className="relative">
-                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-pink-400 pointer-events-none">
-                    <Instagram size={22} />
-                  </div>
-                  <input
-                    type="url"
-                    name="instagram"
-                    value={formData.instagram}
-                    onChange={handleChange}
-                    placeholder="https://instagram.com/trilhosetrilhases"
-                    className="w-full bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-pink-500/50 focus:bg-white/10 focus:outline-none transition-all"
-                    style={{ paddingLeft: '3.5rem', paddingRight: '1.5rem', paddingTop: '1.25rem', paddingBottom: '1.25rem' }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Card Sobre */}
-          <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
-            <div className="flex items-center gap-4" style={{ marginBottom: '2.5rem' }}>
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/30">
-                <Info size={28} className="text-white" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-white">Seção Sobre</h2>
-                <p className="text-white/50">Informações exibidas na seção "Sobre Nós"</p>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-              {/* Texto Sobre */}
-              <div>
-                <label className="block text-white text-lg font-medium mb-3">Texto Sobre Nós</label>
-                <textarea
-                  name="sobre_texto"
-                  value={formData.sobre_texto}
+                <label className="block text-white text-lg font-medium mb-3">WhatsApp</label>
+                <input
+                  type="text"
+                  name="whatsapp"
+                  value={formData.whatsapp}
                   onChange={handleChange}
-                  rows={5}
-                  placeholder="Descreva sua empresa..."
-                  className="w-full px-6 py-5 bg-white/5 border-2 border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:border-purple-500/50 focus:bg-white/10 focus:outline-none transition-all resize-none"
+                  placeholder="5527999999999"
+                  className="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-cyan-500/50 focus:outline-none transition-all"
                 />
               </div>
-
-              {/* Estatísticas */}
               <div>
-                <label className="block text-white text-lg font-medium mb-4">Estatísticas em Destaque</label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Users size={24} className="text-cyan-400" />
-                      <span className="text-white/70 font-medium">Aventureiros</span>
-                    </div>
-                    <input
-                      type="text"
-                      name="num_aventureiros"
-                      value={formData.num_aventureiros}
-                      onChange={handleChange}
-                      placeholder="500"
-                      className="w-full px-5 py-4 bg-white/10 border-2 border-white/10 rounded-xl text-white text-2xl font-bold text-center placeholder-white/30 focus:border-cyan-500/50 focus:outline-none transition-all"
-                    />
-                  </div>
-
-                  <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Mountain size={24} className="text-green-400" />
-                      <span className="text-white/70 font-medium">Trilhas</span>
-                    </div>
-                    <input
-                      type="text"
-                      name="num_trilhas"
-                      value={formData.num_trilhas}
-                      onChange={handleChange}
-                      placeholder="50"
-                      className="w-full px-5 py-4 bg-white/10 border-2 border-white/10 rounded-xl text-white text-2xl font-bold text-center placeholder-white/30 focus:border-green-500/50 focus:outline-none transition-all"
-                    />
-                  </div>
-
-                  <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <MapPin size={24} className="text-pink-400" />
-                      <span className="text-white/70 font-medium">Estados</span>
-                    </div>
-                    <input
-                      type="text"
-                      name="num_estados"
-                      value={formData.num_estados}
-                      onChange={handleChange}
-                      placeholder="4"
-                      className="w-full px-5 py-4 bg-white/10 border-2 border-white/10 rounded-xl text-white text-2xl font-bold text-center placeholder-white/30 focus:border-pink-500/50 focus:outline-none transition-all"
-                    />
-                  </div>
-                </div>
+                <label className="block text-white text-lg font-medium mb-3">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="contato@trilhosetrilhas.com.br"
+                  className="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-cyan-500/50 focus:outline-none transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-white text-lg font-medium mb-3">Instagram</label>
+                <input
+                  type="text"
+                  name="instagram"
+                  value={formData.instagram}
+                  onChange={handleChange}
+                  placeholder="@trilhosetrilhas"
+                  className="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-cyan-500/50 focus:outline-none transition-all"
+                />
               </div>
             </div>
           </div>
 
-          {/* Card Footer */}
-          <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
-            <div className="flex items-center gap-4" style={{ marginBottom: '2.5rem' }}>
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-lg shadow-pink-500/30">
-                <ImageIcon size={28} className="text-white" />
+          {/* Sobre Nós */}
+          <div className="glass rounded-3xl p-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm">2</span>
+              Sobre Nós
+            </h2>
+            <div>
+              <label className="block text-white text-lg font-medium mb-3">Texto da Seção</label>
+              <textarea
+                name="sobre_nos"
+                value={formData.sobre_nos}
+                onChange={handleChange}
+                rows={6}
+                placeholder="Escreva sobre a empresa..."
+                className="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-purple-500/50 focus:outline-none transition-all resize-none"
+              />
+            </div>
+          </div>
+
+          {/* Estatísticas */}
+          <div className="glass rounded-3xl p-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400 text-sm">3</span>
+              Estatísticas
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label className="block text-white text-lg font-medium mb-3">Aventureiros</label>
+                <input
+                  type="number"
+                  name="num_aventureiros"
+                  value={formData.num_aventureiros}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-pink-500/50 focus:outline-none transition-all"
+                />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">Imagem do Footer</h2>
-                <p className="text-white/50">Imagem de fundo da seção de CTA</p>
+                <label className="block text-white text-lg font-medium mb-3">Trilhas Realizadas</label>
+                <input
+                  type="number"
+                  name="num_trilhas"
+                  value={formData.num_trilhas}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-pink-500/50 focus:outline-none transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-white text-lg font-medium mb-3">Estados Visitados</label>
+                <input
+                  type="number"
+                  name="num_estados"
+                  value={formData.num_estados}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/30 focus:border-pink-500/50 focus:outline-none transition-all"
+                />
               </div>
             </div>
-
-            <ImageUpload
-              value={footerImageFile || formData.footer_imagem}
-              onChange={handleImageChange}
-              label="Arraste uma imagem ou clique para selecionar"
-              uploading={uploading}
-              progress={progress}
-            />
-            <p className="text-white/40 text-sm mt-4 text-center">
-              Recomendado: imagem de paisagem em alta resolução (1920×1080 ou maior)
-            </p>
           </div>
 
-          {/* Botão Salvar - CENTRALIZADO */}
-          <div className="flex justify-center" style={{ paddingTop: '1.5rem' }}>
-            <button
-              type="submit"
-              disabled={saving || uploading}
-              className="btn-gradient px-12 py-5 rounded-2xl text-white font-bold text-lg flex items-center gap-3 disabled:opacity-50"
-            >
-              {saving || uploading ? (
-                <>
-                  <Loader size={24} className="animate-spin" />
-                  Salvando...
-                </>
-              ) : (
-                <>
-                  <Save size={24} />
-                  Salvar Configurações
-                </>
-              )}
-            </button>
+          {/* Imagem Footer */}
+          <div className="glass rounded-3xl p-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400 text-sm">4</span>
+              Imagem do Footer (CTA)
+            </h2>
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="w-full md:w-1/2 aspect-video rounded-2xl overflow-hidden bg-white/5 border-2 border-white/10 relative group">
+                {formData.imagem_footer ? (
+                  <img
+                    src={formData.imagem_footer}
+                    alt="Footer CTA"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-white/20">
+                    <ImageIcon size={48} />
+                  </div>
+                )}
+                {uploading && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <LoadingSpinner />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1">
+                <label className="block text-white text-lg font-medium mb-3">Alterar Imagem</label>
+                <p className="text-white/50 mb-6">
+                  Recomendado: 1920x600px ou similar. Formatos: JPG, PNG, WEBP.
+                </p>
+                <label className="inline-flex items-center gap-3 px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-white cursor-pointer transition-all border border-white/10">
+                  <Upload size={20} />
+                  <span>Escolher Arquivo</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    disabled={uploading}
+                  />
+                </label>
+              </div>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     </AdminLayout>
   )

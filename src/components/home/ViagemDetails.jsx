@@ -11,7 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Expand,
-  ExternalLink
+  ExternalLink,
 } from 'lucide-react'
 import { formatCurrency, formatDate, getDifficultyColor, getWhatsAppLink } from '../../lib/utils'
 
@@ -41,7 +41,7 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
   }
 
   return (
-    <section id="viagem-details" className="section-spacing bg-gradient-to-b from-blue-950 to-blue-900">
+    <section id="viagem-details" className="relative section-spacing bg-gradient-to-b from-blue-950 to-blue-900 pt-32 overflow-hidden">
       <div className="container-centered">
 
         {/* Header da viagem - TUDO CENTRALIZADO */}
@@ -66,7 +66,7 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
           <div className="lg:col-span-3" style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
 
             {/* Descrição completa */}
-            <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-10 hover:bg-white/10 transition-all duration-500 hover:shadow-xl hover:shadow-cyan-500/5">
               <h3 className="text-xl font-bold text-white mb-6">Sobre esta aventura</h3>
               <p className="text-white/70 text-lg leading-relaxed">
                 {viagem.descricao}
@@ -75,7 +75,7 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
 
             {/* O que está incluso */}
             {viagem.inclusos && viagem.inclusos.length > 0 && (
-              <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-10 hover:bg-white/10 transition-all duration-500 hover:shadow-xl hover:shadow-green-500/10 group">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                     <Check className="text-green-400" size={20} />
@@ -84,9 +84,11 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {viagem.inclusos.map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-white/70">
-                      <Check size={18} className="text-green-400 flex-shrink-0" />
-                      <span>{item}</span>
+                    <div key={index} className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group/item">
+                      <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 group-hover/item:bg-green-500/20 transition-colors">
+                        <Check size={16} className="text-green-400" />
+                      </div>
+                      <span className="text-white/80 group-hover/item:text-white transition-colors font-medium">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -95,7 +97,7 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
 
             {/* O que NÃO está incluso */}
             {viagem.nao_inclusos && viagem.nao_inclusos.length > 0 && (
-              <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-10 hover:bg-white/10 transition-all duration-500 hover:shadow-xl hover:shadow-red-500/10 group">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
                     <X className="text-red-400" size={20} />
@@ -104,9 +106,11 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {viagem.nao_inclusos.map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-white/70">
-                      <X size={18} className="text-red-400 flex-shrink-0" />
-                      <span>{item}</span>
+                    <div key={index} className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group/item">
+                      <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0 group-hover/item:bg-red-500/20 transition-colors">
+                        <X size={16} className="text-red-400" />
+                      </div>
+                      <span className="text-white/80 group-hover/item:text-white transition-colors font-medium">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -115,7 +119,7 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
 
             {/* O que levar */}
             {viagem.o_que_levar && viagem.o_que_levar.length > 0 && (
-              <div className="glass rounded-3xl" style={{ padding: '2.5rem' }}>
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-10 hover:bg-white/10 transition-all duration-500 hover:shadow-xl hover:shadow-cyan-500/10 group">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center">
                     <Backpack className="text-cyan-400" size={20} />
@@ -124,9 +128,11 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {viagem.o_que_levar.map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-white/70">
-                      <Backpack size={18} className="text-cyan-400 flex-shrink-0" />
-                      <span>{item}</span>
+                    <div key={index} className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group/item">
+                      <div className="w-8 h-8 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0 group-hover/item:bg-cyan-500/20 transition-colors">
+                        <Backpack size={16} className="text-cyan-400" />
+                      </div>
+                      <span className="text-white/80 group-hover/item:text-white transition-colors font-medium">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -149,7 +155,7 @@ const ViagemDetails = ({ viagens, activeIndex, onIndexChange }) => {
 
           {/* Coluna Direita - 2/5 - Card de Preços */}
           <div className="lg:col-span-2">
-            <div className="glass rounded-3xl p-8 lg:sticky lg:top-24">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-8 lg:sticky lg:top-24 shadow-2xl shadow-black/20 hover:border-white/30 transition-all duration-500">
               {/* Price */}
               <div className="text-center mb-8 pb-8 border-b border-white/10">
                 <p className="text-white/50 text-sm mb-2">A partir de</p>
